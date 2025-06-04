@@ -1,39 +1,20 @@
-Django Ranger
-Built with Django, Django REST Framework, PostgreSQL, and Docker.
+# Django Ranger  
+Built with **Django**, **Django REST Framework**, **PostgreSQL**, and **Docker**.
 
-Server Requirements:
-Git
-Docker
-Docker Compose
-PostgreSQL (existing database used)
+---
 
-Deployment Instructions:
-Clone Repository
-git clone https://github.com/SrinivasaRamesh48/django-ranger.git ranger
-cd ranger
+## 🛠 Server Requirements
 
-Build & Start Docker Containers:
-docker-compose up --build
+- Git  
+- Docker  
+- Docker Compose  
+- PostgreSQL (existing database used)
 
-Apply Migrations (optional if DB already exists):
-docker-compose exec web python manage.py migrate
+---
 
-Create Superuser (optional):
-docker-compose exec web python manage.py createsuperuser
+## 🚀 Deployment Instructions
 
-Access the Application:
-API: http://localhost:8000/
-Admin Panel: http://localhost:8000/admin/
-
-Dev Instructions:
-Run Server
-docker-compose up
-Apply Code Changes
-Changes are hot-reloaded inside the container when code is updated locally.
-
-Live Update Instructions:
-Pull Latest Code
-git pull
-
-Rebuild & Restart Containers:
-docker-compose up --build
+### Clone Repository
+```bash
+git clone https://github.com/your-repo/django-ranger.git
+cd django-ranger
