@@ -1,35 +1,39 @@
-Django Ranger Project
+Django Ranger
+Built with Django, Django REST Framework, PostgreSQL, and Docker.
 
-Django Ranger is a web application built with Django and Django REST Framework (DRF), designed to interact with an existing PostgreSQL database originally structured for a Laravel application. It exposes a set of RESTful APIs to manage and access data from pre-existing tables.
-
-Features
-Django Framework: A powerful and scalable web framework for rapid development.
-
-Django REST Framework (DRF): Flexible and robust toolkit for building Web APIs.
-
-PostgreSQL Integration: Connects to a pre-existing PostgreSQL database (originally from a Laravel backend).
-
-Containerized Environment: Uses Docker and Docker Compose for easy and consistent setup.
-
-Legacy Database Support: Models are reverse-engineered to map to existing tables like:
-
-RESTful API: Clean and standardized API endpoints to expose the data.
-
-Prerequisites
-Ensure the following tools are installed on your machine:
-
+Server Requirements:
+Git
 Docker
+Docker Compose
+PostgreSQL (existing database used)
 
-Docker Compose (bundled with Docker Desktop)
+Deployment Instructions:
+Clone Repository
+git clone https://github.com/SrinivasaRamesh48/django-ranger.git ranger
+cd ranger
 
-Getting Started
-Follow these steps to set up the project locally:
-
-1. Clone the Repository
-git clone https://github.com/SrinivasaRamesh48/django-ranger.git
-cd django-ranger
-
-2. Run the Application with Docker
+Build & Start Docker Containers:
 docker-compose up --build
-The API will be available at: http://localhost:8000/
 
+Apply Migrations (optional if DB already exists):
+docker-compose exec web python manage.py migrate
+
+Create Superuser (optional):
+docker-compose exec web python manage.py createsuperuser
+
+Access the Application:
+API: http://localhost:8000/
+Admin Panel: http://localhost:8000/admin/
+
+Dev Instructions:
+Run Server
+docker-compose up
+Apply Code Changes
+Changes are hot-reloaded inside the container when code is updated locally.
+
+Live Update Instructions:
+Pull Latest Code
+git pull
+
+Rebuild & Restart Containers:
+docker-compose up --build
