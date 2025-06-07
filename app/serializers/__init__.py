@@ -2,3 +2,5 @@ from .builk_serializers import BulkEmailTemplateSerializer
 from .builk_serializers import BulkMessageTypeSerializer
 from .builk_serializers import BulkPhoneTemplateSerializer
 # from .CircuitSerializer import CircuitSerializer
+from .CPEControlLogSerializer import CPEControlLogSerializer
+from .HomeSerializer import HomeSerializer

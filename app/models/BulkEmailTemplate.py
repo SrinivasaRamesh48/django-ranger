@@ -12,7 +12,7 @@ class BulkEmailTemplate(models.Model):
 
     class Meta:
         db_table = 'bulk_email_templates'
-        app_label = 'app'  # Replace 'your_app_name' with the actual name of your Django app
+        app_label = 'app'  
 
     def __str__(self):
-        return f"Template: {self.subject}" # Or a more descriptive representation
+        return f"Template: {self.subject}" 
