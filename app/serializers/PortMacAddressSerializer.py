@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 from app.models.PortMacAddress import PortMacAddress
+
 # Import serializers for nested relationships if you want them in the API response:
 # from .serializers import NodeSerializer # Assuming NodeSerializer is defined
 # from .serializers import MacAddressSerializer # Assuming MacAddressSerializer is defined
@@ -33,6 +34,6 @@ class PortMacAddressSerializer(serializers.ModelSerializer):
         home_instance = obj.home_found_info
         if home_instance:
             # Assuming HomeSerializer is defined and imported
-            from .serializers import HomeSerializer # Import locally to avoid circular dependencies
+            from app.serializers.HomeSerializer import HomeSerializer
             return HomeSerializer(home_instance).data
         return None

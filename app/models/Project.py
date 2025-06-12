@@ -20,10 +20,10 @@ class Project(models.Model):
     project_id = models.AutoField(primary_key=True)
     circuit = models.ForeignKey(
         Circuit,
-        on_delete=models.SET_NULL, # Assuming project can exist without a circuit, or circuit can be deleted
+        on_delete=models.SET_NULL,
         null=True, blank=True,
         db_column='circuit_id',
-        related_name='projects_linked' # Renamed to avoid clash with 'projects' reverse relation from Circuit
+        related_name='projects_linked' 
     )
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True) # Assuming longer address string

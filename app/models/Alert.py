@@ -19,4 +19,4 @@ class Alert(models.Model):
         app_label = 'app'
 
     def __str__(self):
-        return f"Alert {self.alert_id} - {self.message[:50]}..." # Return a meaningful representation
+        return f"Alert {self.alert_id} - {self.message[:50]}..." # This will return the first 50 characters of the message for brevity

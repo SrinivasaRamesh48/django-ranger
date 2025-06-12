@@ -11,13 +11,15 @@ from .MacAddressSerializer import MacAddressSerializer
 from .NodeSerializer import NodeSerializer
 from .UploadsSerializer import UploadsSerializer
 from .UserSerializer import User
+
+
 class HomeSerializer(serializers.ModelSerializer):
     
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all()) 
     state = UsStateSerializer(read_only=True) 
     mac_address = MacAddressSerializer(read_only=True) # Nested for MacAddress
     node = NodeSerializer(read_only=True) # Nested for Node
-    wiring_certified_by = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True) # Or UserSerializer(read_only=True) for nesting
+    wiring_certified_by = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), allow_null=True) # Or UserSerializer
 
     # HasMany relationships (nested serializers)
     mesh_installs = serializers.SerializerMethodField() # Custom method to apply whereNull('deleted_at')

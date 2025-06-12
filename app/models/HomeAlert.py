@@ -1,16 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model # Use get_user_model for User
 
-from .AlertType import AlertType  # Import the AlertType model
-from .Home import Home            # Import the Home model
+from .AlertType import AlertType 
+from .Home import Home            
 
-User = get_user_model() # Get the currently active user model
-
+User = get_user_model() 
 class HomeAlert(models.Model):
     home_alert_id = models.AutoField(primary_key=True)
     alert_type = models.ForeignKey(
         AlertType,
-        on_delete=models.CASCADE, # If the alert type is deleted, these alerts go too
+        on_delete=models.CASCADE, 
         db_column='alert_type_id',
         related_name='home_alerts'
     )

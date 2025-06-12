@@ -2,18 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser # The base for custom user models
 from django.utils.translation import gettext_lazy as _ # For translatable strings
 
-# Import related models (use string references if they are defined after User)
-# from .UserCompany import UserCompany
-# from .UserRoles import UserRoles
-# from .UserPermissions import UserPermissions # HasMany, so not a direct FK here
-# from .UserProjects import UserProjects     # HasMany, so not a direct FK here
 
 
 class User(AbstractUser):
-    # Laravel's primaryKey is 'user_id'. AbstractUser typically uses 'id'.
-    # If your existing 'users' table indeed uses 'user_id' as its PK,
-    # you can explicitly set it here, otherwise, Django's default 'id' field is fine.
-    # If you explicitly set it, ensure it's auto-incrementing:
     user_id = models.AutoField(primary_key=True)
 
     # Laravel's 'name' field, often maps to first_name/last_name in AbstractUser.

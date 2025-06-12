@@ -3,8 +3,8 @@ from django.db import models
 class PasswordResetToken(models.Model):
     password_reset_token_id = models.AutoField(primary_key=True)
     subscriber = models.ForeignKey(
-        'Subscriber',  # Use string reference if Subscriber model is defined later
-        on_delete=models.CASCADE,  # If the subscriber is deleted, the token is useless
+        'Subscriber',  
+        on_delete=models.CASCADE,  
         db_column='subscriber_id',
         related_name='password_reset_tokens'
     )

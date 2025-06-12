@@ -9,9 +9,7 @@ class MeshCPEInstall(models.Model):
     cpe_serial_number = models.CharField(max_length=255, blank=True, null=True) # Serial number can be optional/nullable
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # Based on the Laravel 'Home' model's 'mesh_installs' relationship
-    # having 'whereNull('deleted_at')', it's highly likely this table has a 'deleted_at' field
-    deleted_at = models.DateTimeField(null=True, blank=True) # For soft deletes
+
 
     class Meta:
         db_table = 'mesh_cpe_installs'

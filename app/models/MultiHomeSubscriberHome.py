@@ -22,9 +22,7 @@ class MultiHomeSubscriberHome(models.Model):
     class Meta:
         db_table = 'multi_home_subscriber_homes'
         app_label = 'app'
-        # It's common for junction tables to have unique_together constraints
-        # to prevent duplicate links (e.g., one home linked to one subscriber only once)
-        unique_together = ('home', 'subscriber') # Add this if a home can only be linked to a subscriber once
+        
 
     def __str__(self):
         return f"Multi-Home Link: Home {self.home_id} - Subscriber {self.subscriber_id}"

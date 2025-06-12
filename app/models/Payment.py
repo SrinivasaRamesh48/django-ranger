@@ -1,20 +1,20 @@
 from django.db import models
 # Import related models
-from .Subscriber import Subscriber # Assuming Subscriber model exists
-from .Statement import Statement # Assuming Statement model exists
+from .Subscriber import Subscriber 
+from .Statement import Statement 
 from .SubscriberPaymentMethod import SubscriberPaymentMethod # Assuming SubscriberPaymentMethod model exists
 
 class Payment(models.Model):
     payment_id = models.AutoField(primary_key=True)
     subscriber = models.ForeignKey(
         Subscriber,
-        on_delete=models.CASCADE, # If subscriber is deleted, payments are deleted
+        on_delete=models.CASCADE, 
         db_column='subscriber_id',
         related_name='payments'
     )
     statement = models.ForeignKey(
         Statement,
-        on_delete=models.SET_NULL, # Assuming payment might remain even if statement is deleted
+        on_delete=models.SET_NULL,
         null=True, blank=True,
         db_column='statement_id',
         related_name='payments'

@@ -34,7 +34,7 @@ class InterestFormLog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'interest_form_log' # Note: Table name is singular as per Laravel model
+        db_table = 'interest_form_log' 
         app_label = 'app'
 
     def __str__(self):
