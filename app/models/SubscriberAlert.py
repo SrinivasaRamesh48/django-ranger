@@ -1,26 +1,38 @@
+
 from django.db import models
-from django.contrib.auth import get_user_model # Use get_user_model for User
-
+from .User import User
 from .AlertType import AlertType
-from .Subscriber import Subscriber
-
-User = get_user_model()
-
 class SubscriberAlert(models.Model):
+    """Django equivalent of the Laravel SubscriberAlert model."""
     subscriber_alert_id = models.AutoField(primary_key=True)
-    alert_type = models.ForeignKey(AlertType, on_delete=models.CASCADE, db_column='alert_type_id', related_name='subscriber_alerts')
-    subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE, db_column='subscriber_id', related_name='subscriber_alerts')
     message = models.TextField()
     active = models.BooleanField(default=True)
-    activated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='activated_by', related_name='subscriber_alerts_activated')
-    deactivated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='deactivated_by', related_name='subscriber_alerts_deactivated')
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='updated_by', related_name='subscriber_alerts_updated')
+    
+    # Relationships
+    subscriber = models.ForeignKey('Subscriber', on_delete=models.CASCADE, related_name='alerts', db_column='subscriber_id')
+    alert_type = models.ForeignKey(AlertType, on_delete=models.PROTECT, db_column='alert_type_id')
+    activated_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, null=True, blank=True, 
+        related_name='activated_subscriber_alerts',
+        db_column='activated_by'
+    )
+    deactivated_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, null=True, blank=True, 
+        related_name='deactivated_subscriber_alerts',
+        db_column='deactivated_by'
+    )
+    updated_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, null=True, blank=True, 
+        related_name='updated_subscriber_alerts',
+        db_column='updated_by'
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     class Meta:
-        db_table = 'subscriber_alerts'
-        app_label = 'app'
-
-    def __str__(self):
-        return f"Subscriber Alert {self.subscriber_alert_id} for Subscriber {self.subscriber_id} - {self.message[:50]}..."
+        db_table = "subscriber_alerts"
+        ordering = ['-created_at']

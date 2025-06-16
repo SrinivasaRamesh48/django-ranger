@@ -1,41 +1,27 @@
 from django.db import models
-from django.contrib.auth import get_user_model # Use get_user_model for User
-
 from .UsState import UsState # Import the UsState model
+from .User import User # Import the User model
+from .TimeStampedModelMixin import TimeStampedModelMixin
 
-User = get_user_model() # Get the currently active user model
-
-class InterestFormLog(models.Model):
+class InterestFormLog(TimeStampedModelMixin, models.Model):
+    """Django equivalent of the Laravel InterestFormLog model."""
     interest_form_log_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    address = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.ForeignKey(
-        UsState,
-        on_delete=models.SET_NULL, # Assuming log might remain if state is deleted
-        null=True, blank=True,
-        db_column='state_id',
-        related_name='interest_form_logs'
-    )
-    zip_code = models.CharField(max_length=10, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True) # Assuming phone is a string
-    message = models.TextField(blank=True, null=True)
+    address = models.TextField()
+    city = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=10)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    message = models.TextField()
     notes = models.TextField(blank=True, null=True)
-    updated_by = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True, blank=True,
-        db_column='updated_by_id',
-        related_name='interest_form_logs_updated'
-    )
-    ip_address = models.GenericIPAddressField(null=True, blank=True) # Can be IPv4 or IPv6
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    state = models.ForeignKey(UsState, on_delete=models.PROTECT, db_column='state_id')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, db_column='updated_by_id')
+
 
     class Meta:
-        db_table = 'interest_form_log' 
-        app_label = 'app'
+        db_table = "interest_form_log"
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f"Interest Form Log {self.interest_form_log_id} - {self.name}"
+        return f"Interest form from {self.name} on {self.created_at.date()}"

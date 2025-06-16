@@ -1,53 +1,21 @@
 from django.db import models
-from django.contrib.auth import get_user_model # Use get_user_model for User
-
+from .User import User
 from .AlertType import AlertType 
 from .Home import Home            
+from .TimeStampedModelMixin import TimeStampedModelMixin
 
-User = get_user_model() 
-class HomeAlert(models.Model):
+class HomeAlert(TimeStampedModelMixin, models.Model):
     home_alert_id = models.AutoField(primary_key=True)
-    alert_type = models.ForeignKey(
-        AlertType,
-        on_delete=models.CASCADE, 
-        db_column='alert_type_id',
-        related_name='home_alerts'
-    )
-    home = models.ForeignKey(
-        Home,
-        on_delete=models.CASCADE, # If the home is deleted, its alerts go too
-        db_column='home_id',
-        related_name='home_alerts'
-    )
+    home = models.ForeignKey('Home', on_delete=models.CASCADE, related_name='alerts', db_column='home_id')
+    alert_type = models.ForeignKey(AlertType, on_delete=models.PROTECT, db_column='alert_type_id')
     message = models.TextField()
-    active = models.BooleanField(default=True) # Assuming active is a boolean 0/1
-    activated_by = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True, blank=True,
-        db_column='activated_by',
-        related_name='home_alerts_activated'
-    )
-    deactivated_by = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True, blank=True,
-        db_column='deactivated_by',
-        related_name='home_alerts_deactivated'
-    )
-    updated_by = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True, blank=True,
-        db_column='updated_by',
-        related_name='home_alerts_updated'
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    activated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='activated_home_alerts', db_column='activated_by')
+    deactivated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='deactivated_home_alerts', db_column='deactivated_by')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='updated_home_alerts', db_column='updated_by')
 
     class Meta:
         db_table = 'home_alerts'
-        app_label = 'app'
-
+        ordering = ['-created_at']
     def __str__(self):
-        return f"Home Alert {self.home_alert_id} for Home {self.home_id} - {self.message[:50]}..."
+        return f"Alert for {self.home.address}: {self.message[:30]}"

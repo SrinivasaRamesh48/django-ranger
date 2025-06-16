@@ -1,28 +1,34 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
+from .User import User
+from .ServiceChangeSchedule import ServiceChangeSchedule
 # Assuming you have models for Ticket and User
-from .Ticket import Ticket
-User = get_user_model()
-
-
 class TicketEntry(models.Model):
+    """Django equivalent of the Laravel TicketEntry model."""
     ticket_entry_id = models.AutoField(primary_key=True)
-    ticket = models.ForeignKey(
-        Ticket, on_delete=models.CASCADE, related_name='entries', db_column='ticket_id')
-    user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id', related_name='ticket_entries')
     description = models.TextField()
     notes_private = models.TextField(blank=True, null=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     submitted = models.BooleanField(default=False)
+
+    # Relationships
+    ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE, related_name='entries', db_column='ticket_id')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     class Meta:
-        db_table = 'ticket_entry'  # Use singular name to match Laravel
-        app_label = 'app'
+        db_table = 'ticket_entry'
+        ordering = ['-created_at']
 
-    def __str__(self):
-        return f"Ticket Entry {self.ticket_entry_id} for Ticket {self.ticket_id}"
+    @property
+    def dispatch_appointment(self):
+        return self.ticket.dispatchappointment_set.order_by('-dispatch_appointment_id').first()
+
+    @property
+    def service_change_schedule(self):
+        try:
+            return self.servicechangeschedule
+        except ServiceChangeSchedule.DoesNotExist:
+            return None

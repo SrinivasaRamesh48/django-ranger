@@ -2,21 +2,50 @@ from django.db import models
 from .AlertType import AlertType   
 from .User import User  
 from .Outage import Outage  
+
 class Alert(models.Model):
     alert_id = models.AutoField(primary_key=True)
-    alert_type = models.ForeignKey(AlertType, on_delete=models.CASCADE, db_column='alert_type_id')
-    message = models.TextField()
-    active = models.BooleanField(default=True) # Assuming active is a boolean 0/1
-    activated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='alerts_activated')
-    deactivated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='alerts_deactivated')
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='alerts_updated')
-    outage = models.ForeignKey(Outage, on_delete=models.SET_NULL, null=True, db_column='outage_id')
+    alert_type = models.ForeignKey(
+        AlertType,
+        on_delete=models.PROTECT, 
+        db_column='alert_type_id',
+    )
+    message = models.TextField(help_text="The content of the alert message.")
+    active = models.BooleanField(default=True, help_text="Indicates if the alert is currently active.")
+    activated_by = models.ForeignKey(
+        User,
+        related_name='activated_alerts',
+        on_delete=models.SET_NULL, 
+        null=True, blank=True,
+        db_column='activated_by'
+    )
+    deactivated_by = models.ForeignKey(
+        User,
+        related_name='deactivated_alerts',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        db_column='deactivated_by'
+    )
+    updated_by = models.ForeignKey(
+        User,
+        related_name='updated_alerts',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        db_column='updated_by'
+    )
+
+    outage = models.ForeignKey(
+        Outage,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        db_column='outage_id'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'alerts'
-        app_label = 'app'
+        db_table = "alerts"
 
     def __str__(self):
-        return f"Alert {self.alert_id} - {self.message[:50]}..." # This will return the first 50 characters of the message for brevity
+        return f"Alert ({self.alert_type.name}): {self.message[:50]}..."

@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from app.models.Subscriber import Subscriber 
-from app.serializers.SubscriberSerializer import SubscriberSerializer 
+from app.Serializers import SubscriberSerializer 
 
 
 class SubscriberACPViewSet(viewsets.ModelViewSet):

@@ -1,6 +1,8 @@
 from django.db import models
+from .TimeStampedModelMixin import TimeStampedModelMixin
 
-class Circuit(models.Model):
+
+class Circuit(TimeStampedModelMixin, models.Model):
     circuit_id = models.AutoField(primary_key=True)
     circuit_carrier = models.ForeignKey('CircuitCarrier', on_delete=models.CASCADE, related_name='circuits', db_column='circuit_carrier_id')
     title = models.CharField(max_length=255)
@@ -15,8 +17,6 @@ class Circuit(models.Model):
     mbps_speed = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     facility_assignment = models.CharField(max_length=255, blank=True, null=True)
     media_type = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'circuits'

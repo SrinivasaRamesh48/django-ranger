@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from app.models.Builder import Builder
-from app.serializers.BuilderSerializer import BuilderSerializer
+from app.Serializers import BuilderSerializer
 
 class BuilderViewSet(viewsets.ReadOnlyModelViewSet):
     """

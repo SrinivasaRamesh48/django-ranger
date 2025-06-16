@@ -1,14 +1,8 @@
 from django.db import models
 
 class ReportType(models.Model):
+    """Django equivalent of the Laravel ReportType model."""
     report_type_id = models.AutoField(primary_key=True)
-    # Assuming this type has a descriptive field, like 'name' for the report type.
-    name = models.CharField(max_length=255, unique=True) # Common for type tables
-    # Add any other fields that might be in your 'report_types' table
-
+    
     class Meta:
-        db_table = 'report_types'
-        app_label = 'app'
-
-    def __str__(self):
-        return self.name
+        db_table = "report_types"

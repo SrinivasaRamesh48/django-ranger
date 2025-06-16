@@ -1,24 +1,30 @@
 from django.db import models
 from .BulkMessageType import BulkMessageType
+from .TimeStampedModelMixin import TimeStampedModelMixin
 
-class BulkEmailTemplate(models.Model):
-    bulk_email_template_id = models.AutoField(primary_key=True)
-    description = models.TextField()
-    bulk_message_type = models.ForeignKey(BulkMessageType, on_delete=models.CASCADE, db_column='bulk_message_type_id')
+
+class BulkEmailTemplate(TimeStampedModelMixin,models.Model):
+    outage_email_template_id = models.AutoField(primary_key=True)
+    description = models.TextField(blank=True, null=True)
     subject = models.CharField(max_length=255)
     body = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    message_type = models.ForeignKey(
+        BulkMessageType,
+        on_delete=models.SET_NULL,
+        db_column='bulk_message_type_id',
+        null=True,
+        blank=True
+    )
 
     class Meta:
-        db_table = 'bulk_email_templates'
-        app_label = 'app'  
+        db_table = "bulk_email_templates"
 
     def __str__(self):
-        return f"Template: {self.subject}" 
+        return self.subject
 
     # SQL for creating the table
-    
+
 #     DROP TABLE IF EXISTS `bulk_email_templates`;
 # /*!40101 SET @saved_cs_client     = @@character_set_client */;
 # /*!40101 SET character_set_client = utf8 */;
