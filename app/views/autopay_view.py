@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from app.models.Subscriber import Subscriber
-from app.Serializers import SubscriberSerializer
+from app.serializers import SubscriberSerializer
 
 class AutopayViewSet(viewsets.ReadOnlyModelViewSet):
     """

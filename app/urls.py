@@ -1,26 +1,35 @@
 from django.urls import path
-from app.views.ACPController import SubscriberACPViewSet 
-from app.views.AlertsController import AlertViewSet
-from app.views.AlertTypesController import AlertTypesViewSet
-from app.views.AutopayController import AutopayViewSet
-from app.views.BillingController import SuccessfulTransactionWebhookView
-from app.views.CircuitAlertsController import CircuitAlertViewSet
-from app.views.CircuitCarriersController import CircuitCarrierViewSet
-from app.views.HomeAlertsController import HomeAlertViewSet
-from app.views.InterestFormController import InterestFormLogViewSet
+from app.views.acp_view import SubscriberACPViewSet
+from app.views.alerts_view import AlertViewSet
+from app.views.alert_types_view import AlertTypesViewSet
+from app.views.autopay_view import AutopayViewSet
+from app.views.billing_view import SuccessfulTransactionWebhookView
+from app.views.circuit_alerts_view import CircuitAlertViewSet
+from app.views.circuit_carriers_view import CircuitCarrierViewSet
+from app.views.home_alerts_view import HomeAlertViewSet
+from app.views.interest_form_view import InterestFormLogViewSet
 # from app.views.MacAddressController import MacAddressViewSet
-from app.views.NodeClassesController import NodeClassViewSet
-from app.views.NodeFramesController import NodeFrameViewSet
-from app.views.NodesController import NodeViewSet
-from app.views.NodeTypesController import NodeTypeViewSet
+from app.views.node_classes_view import NodeClassViewSet
+from app.views.node_frames_view import NodeFrameViewSet
+from app.views.nodes_view import NodeViewSet
+from app.views.node_types_view import NodeTypeViewSet
+from app.views.ont_view import OntViewSet
+from app.views.ont_manufacturer_view import OntManufacturerViewSet
+from app.views.port_mac_address_view import PortMacAddressViewSet
+from app.views.subscriber_alerts_view import SubscriberAlertViewSet
+from app.views.subscription_types_view import SubscriptionTypeViewSet
+from app.views.ticket_categories_view import TicketCategoryViewSet
+from app.views.uploads_view import download_file_view
+from app.views.us_states_view import UsStateViewSet
+from app.views.user_company_view import UserCompanyViewSet
+from app.views.user_roles_view import UserRolesViewSet
 
 urlpatterns = [
     # POST /successful_transaction_webhook -> BillingController@create_transaction
-    path(
-        'successful_transaction_webhook',
-        SuccessfulTransactionWebhookView.as_view(),
-        name='webhook-successful-transaction'
-    ),
+    path('successful_transaction_webhook',SuccessfulTransactionWebhookView.as_view(),name='webhook-successful-transaction'),
+    
+    
+    
     #  ACP
     path('allACP', SubscriberACPViewSet.as_view({'get': 'list'}), name='acp-list'),
     path('acp_enroll', SubscriberACPViewSet.as_view({'post': 'enroll'}), name='acp-enroll'),
@@ -66,5 +75,33 @@ urlpatterns = [
     path('node_frames', NodeFrameViewSet.as_view({'get': 'list'}), name='node-frame-list'),
     path('node_types', NodeTypeViewSet.as_view({'get': 'list'}), name='node-type-list'),
     
+    #  Networking Page
+    path('allONTData', OntViewSet.as_view({'get': 'list'}), name='ont-list-all'),
     
-]
+    
+    
+    #  Other
+    path('ont_manufacturers', OntManufacturerViewSet.as_view({'get': 'list'}), name='ont-manufacturer-list'),
+    path('download_file/<int:file_id>', download_file_view, name='download-file'),
+    path('us_states', UsStateViewSet.as_view({'get': 'list'}), name='us-state-list'),
+
+    #  Networking Page
+    path('allPortMacAddressData', PortMacAddressViewSet.as_view({'get': 'list'}), name='port-mac-address-list-all'),
+
+    # subscriber_alerts 
+    path('subscriber_alerts', SubscriberAlertViewSet.as_view({'post': 'create'}), name='subscriber-alert-create'),
+    path('subscriber_alerts/<int:subscriber_alert_id>', SubscriberAlertViewSet.as_view({'put': 'update'}), name='subscriber-alert-update'),
+    
+    # projects
+     path('subscription_types', SubscriptionTypeViewSet.as_view({'get': 'list'}), name='subscription-type-list'),
+     
+    #  Ticket 
+    path('ticket_categories', TicketCategoryViewSet.as_view({'get': 'list'}), name='ticket-category-list'),
+    
+    #  User
+    path('user_companies', UserCompanyViewSet.as_view({'get': 'list'}), name='user-company-list'),
+    path('user_roles', UserRolesViewSet.as_view({'get': 'list'}), name='user-roles-list'),
+    
+    
+    
+    ]

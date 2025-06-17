@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from app.models.CircuitCarrier import CircuitCarrier
-from app.Serializers import CircuitCarrierSerializer
+from app.serializers import CircuitCarrierSerializer
 
 class CircuitCarrierViewSet(viewsets.ReadOnlyModelViewSet):
     """

@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from app.models.Node import Node
-from app.Serializers import NodeSerializer
+from app.serializers import NodeSerializer
 
 class NodeViewSet(viewsets.ModelViewSet):
     """

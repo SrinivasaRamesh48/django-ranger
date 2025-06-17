@@ -2,17 +2,19 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.models.NodeType import NodeType
-from app.Serializers import NodeTypeSerializer
+from app.models import Ont
+from app.serializers import OntSerializer
 
-class NodeTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class OntViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    A read-only ViewSet for retrieving Node Types.
-    This corresponds to `NodeTypesController@index`.
-    - GET /node_types -> Triggers the `list` action.
+    A read-only ViewSet for retrieving ONTs.
+    This corresponds to `ONTController@index`.
+    - GET /onts/ -> Triggers the `list` action.
     """
-    queryset = NodeType.objects.all()
-    serializer_class = NodeTypeSerializer
+    # The queryset defines the data to be returned.
+    # select_related is the Django equivalent of eager loading (`with`).
+    queryset = Ont.objects.select_related('home', 'node', 'manufacturer').all()
+    serializer_class = OntSerializer
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):

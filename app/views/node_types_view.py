@@ -2,17 +2,17 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.models.NodeFrame import NodeFrame
-from app.Serializers import NodeFrameSerializer
+from app.models.NodeType import NodeType
+from app.serializers import NodeTypeSerializer
 
-class NodeFrameViewSet(viewsets.ReadOnlyModelViewSet):
+class NodeTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    A read-only ViewSet for retrieving Node Frames.
-    This corresponds to `NodeFramesController@index`.
-    - GET /node_frames -> Triggers the `list` action.
+    A read-only ViewSet for retrieving Node Types.
+    This corresponds to `NodeTypesController@index`.
+    - GET /node_types -> Triggers the `list` action.
     """
-    queryset = NodeFrame.objects.all()
-    serializer_class = NodeFrameSerializer
+    queryset = NodeType.objects.all()
+    serializer_class = NodeTypeSerializer
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
