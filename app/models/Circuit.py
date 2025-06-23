@@ -1,5 +1,5 @@
 from django.db import models
-from .TimeStampedModelMixin import TimeStampedModelMixin
+from .time_stamped_model_mixin import TimeStampedModelMixin
 
 
 class Circuit(TimeStampedModelMixin, models.Model):

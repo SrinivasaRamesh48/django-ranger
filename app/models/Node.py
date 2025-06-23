@@ -1,8 +1,8 @@
 from django.db import models
-from .NodeFrame import NodeFrame
-from .NodeClass import NodeClass
-from .NodeType import NodeType
-from .Project import Project
+from .node_frame import NodeFrame
+from .node_class import NodeClass
+from .node_type import NodeType
+from .project import Project
 # -*- coding: utf-8 -*-
 class Node(models.Model):
     """Django equivalent of the Laravel Node model."""

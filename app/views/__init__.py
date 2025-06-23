@@ -8,9 +8,9 @@ from .bulk_message_view import *
 from .circuit_alerts_view import CircuitAlertViewSet
 from .circuit_carriers_view import CircuitCarrierViewSet
 from .home_alerts_view import HomeAlertViewSet
-from .home_view import HomeViewSet
+# from .home_view import 
 from .interest_form_view import InterestFormLogViewSet
-from .mac_address_view import MacAddressViewSet
+# from .mac_address_view import MacAddressViewSet
 from .node_classes_view import NodeClassViewSet
 from .node_frames_view import NodeFrameViewSet
 from .node_types_view import NodeTypeViewSet

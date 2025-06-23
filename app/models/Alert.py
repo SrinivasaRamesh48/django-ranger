@@ -1,7 +1,7 @@
 from django.db import models
-from .AlertType import AlertType   
-from .User import User  
-from .Outage import Outage  
+from .alert_type import AlertType   
+from .user import User  
+from .outage import Outage  
 
 class Alert(models.Model):
     alert_id = models.AutoField(primary_key=True)

@@ -1,6 +1,6 @@
 from django.db import models
-
-class Subscriber(models.Model):
+from app.models.time_stamped_model_mixin import TimeStampedModelMixin
+class Subscriber(TimeStampedModelMixin, models.Model):
     subscriber_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -23,8 +23,7 @@ class Subscriber(models.Model):
     service_plan = models.ForeignKey("ServicePlan", on_delete=models.PROTECT, db_column='service_plan_id')
     node = models.ForeignKey("Node", on_delete=models.SET_NULL, null=True, blank=True, db_column='node_id')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
     
     class Meta:
         db_table = 'subscribers'

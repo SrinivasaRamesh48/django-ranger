@@ -1,5 +1,5 @@
 from django.db import models
-from app.models import UsState, Builder, SubscriptionType, ServicePlan, Circuit
+
 class Project(models.Model):
     """Django equivalent of the Laravel Project model."""
     project_id = models.AutoField(primary_key=True)
@@ -24,8 +24,6 @@ class Project(models.Model):
     circuit = models.ForeignKey("Circuit", on_delete=models.SET_NULL, null=True, blank=True, db_column='circuit_id')
     # network_type is not defined in the Laravel model as a direct FK
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = "projects"
     def __str__(self):

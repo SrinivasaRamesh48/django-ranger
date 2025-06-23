@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from app.models.HomeAlert import HomeAlert
+from app.models.home_alert import HomeAlert
 from app.serializers import HomeAlertSerializer
 
 class HomeAlertViewSet(viewsets.ModelViewSet):

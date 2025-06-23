@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.models.Node import Node
+from app.models.node import Node
 from app.serializers import NodeSerializer
 
 class NodeViewSet(viewsets.ModelViewSet):

@@ -4,9 +4,8 @@ from app.models import (
     UsState, CircuitCarrier, Circuit, CPEControlLogType, CPEControlLog,
     DispatchAppointmentType, DispatchAppointmentTimeslot, Ticket,
     MacAddress, NodeClass, NodeType, Subscriber, HomeAlert,
-    MeshCPEInstall, Home, NodeFrame, Node, MultiHomeSubscriberHome,
-    DowntimeEvent, EmailLogItem, BulkEmailTemplate, BulkPhoneTemplate,
-    DispatchAppointment, InterestFormLog, CircuitAlert, OltSnapshot, OntManufacturer, Ont, OutageHomesEffected, PasswordResetToken, Payment, SubscriberPaymentMethod, Statement, PortMacAddress, Builder, SubscriptionType ,ServicePlan, ProjectNetworkType,QBOToken,ProjectAlert,RateLimitLog,ReportType,SavedReport,ServiceChangeSchedule,ServiceChangeScheduleType,LeasingStaffRed,SMSLogItem,StatementItem,StatementItemDescription,StatementItemType,SubscriberAlert,SubscriberEmailLog,SubscriberSMSLog,TicketCategory,TicketEntry,TicketEntryAction,TicketStatus,TicketEntryActionType,TicketStatus,UploadType,Uploads,UserCompany,UserPermissionCategory,UserPermissionDefaults,UserPermissions,UserPermissionSubcategory,UserPermissionType,UserProjects,UserRoles,UsState
+    MeshCPEInstall, Home, NodeFrame, Node, DowntimeEvent, EmailLogItem, BulkEmailTemplate, BulkPhoneTemplate,
+    DispatchAppointment, InterestFormLog, CircuitAlert, OltSnapshot, OntManufacturer, Ont, OutageHomesEffected, PasswordResetToken, Payment, SubscriberPaymentMethod, Statement, PortMacAddress, Builder, SubscriptionType ,ServicePlan, ProjectNetworkType,QBOToken,ProjectAlert,RateLimitLog,ReportType,SavedReport,ServiceChangeSchedule,ServiceChangeScheduleType,LeasingStaffRed,SMSLogItem,StatementItem,StatementItemDescription,StatementItemType,SubscriberAlert,SubscriberEmailLog,SubscriberSMSLog,TicketCategory,TicketEntry,TicketEntryAction,TicketStatus,TicketEntryActionType,TicketStatus,UploadType,Uploads,UserCompany,UserPermissionCategory,UserPermissionDefaults,UserPermissions,UserPermissionSubcategory,UserPermissionType,UserProjects,UserRoles,UsState, multi_home_subscriber_home
 )
 
 
@@ -404,7 +403,7 @@ class MultiHomeSubscriberHomeSerializer(serializers.ModelSerializer):
     home_id = serializers.PrimaryKeyRelatedField(queryset=Home.objects.all(), source='home', write_only=True)
     subscriber_id = serializers.PrimaryKeyRelatedField(queryset=Subscriber.objects.all(), source='subscriber', write_only=True)
     class Meta:
-        model = MultiHomeSubscriberHome
+        model = multi_home_subscriber_home
         fields = [
             'multi_home_subscriber_home_id', 'created_at', 'updated_at',
             'home', 'subscriber', 'home_id', 'subscriber_id'

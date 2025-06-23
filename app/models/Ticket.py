@@ -1,8 +1,8 @@
 from django.db import models
-from .User import User
-from .TicketCategory import TicketCategory
-
-class Ticket(models.Model):
+from .user import User
+from .ticket_category import TicketCategory
+from .time_stamped_model_mixin import TimeStampedModelMixin
+class Ticket(TimeStampedModelMixin, models.Model):
     """Django equivalent of the Laravel Ticket model."""
     ticket_id = models.AutoField(primary_key=True)
     opened_on = models.DateTimeField(auto_now_add=True)
@@ -14,9 +14,6 @@ class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id')
     ticket_category = models.ForeignKey(TicketCategory, on_delete=models.PROTECT, db_column='ticket_category_id', default=2)
     ticket_status = models.ForeignKey('TicketStatus', on_delete=models.PROTECT, db_column='ticket_status_id')
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         db_table = "tickets"

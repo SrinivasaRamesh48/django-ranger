@@ -1,8 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from app import models
 from app.models import Payment
-from app.serializers import PaymentListSerializer, PaymentDetailSerializer
+from app.serializers import PaymentSerializer 
 
 
 class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
@@ -14,10 +15,7 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'payment_id'
 
     def get_serializer_class(self):
-        """Return a different serializer for list vs. detail."""
-        if self.action == 'list':
-            return PaymentListSerializer
-        return PaymentDetailSerializer
+        return PaymentSerializer
 
     def list(self, request, *args, **kwargs):
         """

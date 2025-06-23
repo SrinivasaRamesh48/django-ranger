@@ -1,6 +1,6 @@
 from django.db import models
-
-class Statement(models.Model):
+from .time_stamped_model_mixin import TimeStampedModelMixin
+class Statement(TimeStampedModelMixin, models.Model):
     """Django equivalent of the Laravel Statement model."""
     statement_id = models.AutoField(primary_key=True)
     due_date = models.DateField()
@@ -12,9 +12,6 @@ class Statement(models.Model):
 
     # Relationships
     subscriber = models.ForeignKey('Subscriber', on_delete=models.CASCADE, related_name='statements', db_column='subscriber_id')
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "statements"

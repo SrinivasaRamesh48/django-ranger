@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from app.models.NodeClass import NodeClass
+from app.models.node_class import NodeClass
 from app.serializers import NodeClassSerializer
 
 

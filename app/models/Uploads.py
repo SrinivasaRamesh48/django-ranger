@@ -1,11 +1,11 @@
 from django.db import models
 
 # Import all related models
-from .Project import Project 
-from .Circuit import Circuit 
-from .Home import Home 
-from .Subscriber import Subscriber
-from .UploadTypes import UploadType 
+from .project import Project 
+from .circuit import Circuit 
+ 
+from .subscriber import Subscriber
+from .upload_types import UploadType 
 
 class Uploads(models.Model):
     upload_id = models.AutoField(primary_key=True)
@@ -24,7 +24,7 @@ class Uploads(models.Model):
         related_name='uploads'
     )
     home = models.ForeignKey(
-        Home,
+        'Home',
         on_delete=models.SET_NULL, # Upload might remain if home is deleted
         null=True, blank=True,
         db_column='home_id',

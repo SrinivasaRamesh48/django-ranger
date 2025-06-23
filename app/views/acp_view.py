@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from app.models.Subscriber import Subscriber 
+from app.models.subscriber import Subscriber 
 from app.serializers import SubscriberSerializer 
 
 

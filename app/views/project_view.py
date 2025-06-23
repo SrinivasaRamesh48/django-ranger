@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from app.models import Project, Uploads
 from app.serializers import (
-    ProjectListSerializer, ProjectDetailSerializer, NodeSerializer, FileUploadSerializer
+ NodeSerializer,ProjectSerializer
 )
 
 
@@ -18,9 +18,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
     lookup_field = 'project_id'
 
     def get_serializer_class(self):
-        if self.action in ['list', 'projects_full']:
-            return ProjectListSerializer
-        return ProjectDetailSerializer
+        return ProjectSerializer
+        
 
     def get_queryset(self):
         """Eager load common relationships to improve performance."""
@@ -30,7 +29,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """Corresponds to the `index` method."""
-        queryset = self.get_queryset().order_by('-circuit_id') # Matching specific order
+        queryset = self.get_queryset().order_by('-circuit_id')
         serializer = self.get_serializer(queryset, many=True)
         return Response({
             'success': True, 'data': serializer.data, 'message': 'Projects Successfully Retrieved.'

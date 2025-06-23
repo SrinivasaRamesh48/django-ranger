@@ -1,7 +1,6 @@
 from django.db import models
-from .Node import Node                # Import the Node model
-from .OntManufacturer import OntManufacturer # Import the OntManufacturer model
-from .Home import Home                # Import the Home model
+from .node import Node                # Import the Node model
+from .ont_manufacturer import OntManufacturer # Import the OntManufacturer model
 
 class Ont(models.Model):
     """Django equivalent of the Laravel Ont model."""
