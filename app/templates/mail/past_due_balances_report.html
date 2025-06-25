@@ -1,0 +1,108 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Past Due Balances Report{% endblock %}
+
+{% block content %}
+    <h2>Past Due Balances Report - {{ data.date }}</h2>
+
+    <p><strong>{{ data.past_due|length }}</strong> accounts with a balance past due by 60+ days.</p>
+
+    <p><b>Deactivated Accounts</b> ({{ data.deactivated|length }})</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subscriber ID</th>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Address</th>
+                <th>Service Plan</th>
+                <th>Balance Due</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.deactivated %}
+                <tr>
+                    <td>{{ row.subscriber_id }}</td>
+                    <td>{{ row.first_name }} {{ row.last_name }}</td>
+                    <td>{{ row.home.project.name }}</td>
+                    <td>{{ row.home.address }}</td>
+                    <td>{{ row.service_plan.description }} | ${{ row.service_plan.amount|floatformat:2 }}</td>
+                    <td>${{ row.statement.balance|floatformat:2 }}</td>
+                    <td>{{ row.statement.due_date }}</td>
+                </tr>      
+            {% endfor %}
+            <tr>
+                <th colspan="5" style="text-align:right; font-weight:bold; padding-right:10px;">Total</th>
+                <th colspan="2" style="font-weight:bold;">${{ data.deactivated_total|floatformat:2 }}</th>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+
+    <p><b>Suspended Accounts</b> ({{ data.suspended|length }})</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subscriber ID</th>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Address</th>
+                <th>Service Plan</th>
+                <th>Balance Due</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.suspended %}
+                <tr>
+                    <td>{{ row.subscriber_id }}</td>
+                    <td>{{ row.first_name }} {{ row.last_name }}</td>
+                    <td>{{ row.home.project.name }}</td>
+                    <td>{{ row.home.address }}</td>
+                    <td>{{ row.service_plan.description }} | ${{ row.service_plan.amount|floatformat:2 }}</td>
+                    <td>${{ row.statement.balance|floatformat:2 }}</td>
+                    <td>{{ row.statement.due_date }}</td>
+                </tr>      
+            {% endfor %}
+            <tr>
+                <th colspan="5" style="text-align:right; font-weight:bold; padding-right:10px;">Total</th>
+                <th colspan="2" style="font-weight:bold;">${{ data.suspended_total|floatformat:2 }}</th>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+
+    <p><b>Active Accounts</b> ({{ data.active|length }})</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subscriber ID</th>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Address</th>
+                <th>Service Plan</th>
+                <th>Balance Due</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.active %}
+                <tr>
+                    <td>{{ row.subscriber_id }}</td>
+                    <td>{{ row.first_name }} {{ row.last_name }}</td>
+                    <td>{{ row.home.project.name }}</td>
+                    <td>{{ row.home.address }}</td>
+                    <td>{{ row.service_plan.description }} | ${{ row.service_plan.amount|floatformat:2 }}</td>
+                    <td>${{ row.statement.balance|floatformat:2 }}</td>
+                    <td>{{ row.statement.due_date }}</td>
+                </tr>      
+            {% endfor %}
+            <tr>
+                <th colspan="5" style="text-align:right; font-weight:bold; padding-right:10px;">Total</th>
+                <th colspan="2" style="font-weight:bold;">${{ data.active_total|floatformat:2 }}</th>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

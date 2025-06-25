@@ -1,0 +1,8 @@
+
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Potential Outage Detected - {{ data.project }}{% endblock %}
+
+{% block content %}
+    <p>A potential outage has been detected at {{ data.project }}. Please click the following link to confirm the validity of this outage: <a href="{{ data.url }}">{{ data.url }}</a>.</p>
+{% endblock %}

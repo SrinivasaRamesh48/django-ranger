@@ -1,0 +1,323 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber Projects Report - {{ date }}{% endblock %}
+
+{% block content %}
+    <h1>Uprise Fiber Projects Report - {{ date }}<br /><small><small style="font-size: 12px; font-weight: 400;">Data From {{ data.start_date }} - {{ data.end_date }}</small></small></h1>
+
+    <h2>Opt-In Summary</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Total Units</th>
+                <th>Active Subs</th>
+                <th>Take Rate</th>
+                <th>Activations</th>
+                <th>Deactivations</th>
+                <th>Churn</th>
+                <th>Web Payments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan="3">Totals</th>
+                <th>{{ data.optin_summary.total_units }}</th>
+                <th>{{ data.optin_summary.active }}</th>
+                <th>{{ data.optin_summary.take_rate|floatformat:2 }}%</th>
+                <th>{{ data.optin_summary.activation_count }}</th>
+                <th>{{ data.optin_summary.deactivation_count }}</th>
+                <th>
+                    {% with churn=data.optin_summary.activation_count|add:data.optin_summary.deactivation_count|neg %}
+                        {% if churn > 0 %}+{% endif %}{{ churn }}
+                    {% endwith %}
+                </th>
+                <th>${{ data.optin_summary.payments|floatformat:2 }}</th>
+            </tr>
+            {% for project in data.optin_projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.address }}</td>
+                    <td>{{ project.city }}</td>
+                    <td>{{ project.total_units }}</td>
+                    <td>{{ project.active }}</td>
+                    <td>{{ project.take_rate|floatformat:2 }}%</td>
+                    <td>{{ project.activation_count }}</td>
+                    <td>{{ project.deactivation_count }}</td>
+                    <td>
+                        {% with churn=project.activation_count|add:project.deactivation_count|neg %}
+                            {% if churn > 0 %}+{% endif %}{{ churn }}
+                        {% endwith %}
+                    </td>
+                    <td>${{ project.payments|floatformat:2 }}</td>
+            </tr>      
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br />
+    <br />
+    
+    <h2>Bulk Summary</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Service Plan</th>
+                <th>Total Units</th>
+                <th>Active Subs</th>
+                <th>Take Rate</th>
+                <th>Activations</th>
+                <th>Deactivations</th>
+                <th>Churn</th>
+                <th>Payments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan="4">Totals</th>
+                <th>{{ data.bulk_summary.total_units }}</th>
+                <th>{{ data.bulk_summary.active }}</th>
+                <th>{{ data.bulk_summary.take_rate|floatformat:2 }}%</th>
+                <th>{{ data.bulk_summary.activation_count }}</th>
+                <th>{{ data.bulk_summary.deactivation_count }}</th>
+                <th>
+                    {% with churn=data.bulk_summary.activation_count|add:data.bulk_summary.deactivation_count|neg %}
+                        {% if churn > 0 %}+{% endif %}{{ churn }}
+                    {% endwith %}
+                </th>
+                <th>${{ data.bulk_summary.payments|floatformat:2 }}</th>
+            </tr>
+            {% for project in data.bulk_projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.address }}</td>
+                    <td>{{ project.city }}</td>
+                    <td>{{ project.service_plan }}</td>
+                    <td>{{ project.total_units }}</td>
+                    <td>{{ project.active }}</td>
+                    <td>{{ project.take_rate|floatformat:2 }}%</td>
+                    <td>{{ project.activation_count }}</td>
+                    <td>{{ project.deactivation_count }}</td>
+                    <td>
+                        {% with churn=project.activation_count|add:project.deactivation_count|neg %}
+                            {% if churn > 0 %}+{% endif %}{{ churn }}
+                        {% endwith %}
+                    </td>
+                    <td>${{ project.payments|floatformat:2 }}</td>
+            </tr>      
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {#
+    <br />
+    <br />
+    
+    <h2>Opt-In Projects</h2>
+    {% for project in data.optin_projects %}
+    <div>
+        <h3>{{ project.name }}<br /><small>{{ project.address }}  |  {{ project.city }}</small></h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Total Units</th>
+                    <th>Active Subs</th>
+                    <th>Take Rate</th>
+                    <th>Activations</th>
+                    <th>Deactivations</th>
+                    <th>Churn Rate</th>
+                    <th>Web Payments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ project.total_units }}</td>
+                    <td>{{ project.active }}</td>
+                    <td>{{ project.take_rate|floatformat:2 }}%</td>
+                    <td>{{ project.activation_count }}</td>
+                    <td>{{ project.deactivation_count }}</td>
+                    <td>
+                        {% with churn=project.activation_count|add:project.deactivation_count|neg %}
+                            {% if churn > 0 %}+{% endif %}{{ churn }}
+                        {% endwith %}
+                    </td>
+                    <td>${{ project.payments|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><b>Activations</b></p>
+
+        {% if project.activations %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subscriber</th>
+                        <th>Unit</th>
+                        <th>Activation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in project.activations %}
+                        <tr>
+                            <td>{{ sub.first_name }} {{ sub.last_name }}</td>
+                            <td>
+                                {% if sub.multi_homes %}
+                                    {{ sub.multi_homes|length }} Units
+                                {% else %}
+                                    {{ sub.home.unit }}
+                                {% endif %}
+                            </td>
+                            <td>{{ sub.service_activated_on|date:"m/d/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No Activations</em></p>
+        {% endif %}
+
+        <p><b>Deactivations</b></p>
+
+        {% if project.deactivations %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subscriber</th>
+                        <th>Unit</th>
+                        <th>Deactivation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in project.deactivations %}
+                        <tr>
+                            <td>{{ sub.first_name }} {{ sub.last_name }}</td>
+                            <td>
+                            {% if sub.multi_homes %}
+                                {{ sub.multi_homes|length }} Units
+                            {% else %}
+                                {{ sub.home.unit }}
+                            {% endif %}
+                            </td>
+                            <td>{{ sub.service_deactivated_on|date:"m/d/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No Deactivations</em></p>
+        {% endif %}
+        <br />
+    </div> 
+    {% endfor %}
+
+
+    <br />
+    <br />
+    <h2>Bulk Projects</h2>
+    {% for project in data.bulk_projects %}
+    <div>
+        <h3>{{ project.name }}<br /><small>{{ project.address }}  |  {{ project.city }}</small></h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Total Units</th>
+                    <th>Active Subs</th>
+                    <th>Take Rate</th>
+                    <th>Activations</th>
+                    <th>Deactivations</th>
+                    <th>Churn Rate</th>
+                    <th>Payments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ project.total_units }}</td>
+                    <td>{{ project.active }}</td>
+                    <td>{{ project.take_rate|floatformat:2 }}%</td>
+                    <td>{{ project.activation_count }}</td>
+                    <td>{{ project.deactivation_count }}</td>
+                    <td>
+                        {% with churn=project.activation_count|add:project.deactivation_count|neg %}
+                            {% if churn > 0 %}+{% endif %}{{ churn }}
+                        {% endwith %}
+                    </td>
+                    <td>${{ project.payments|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><b>Activations</b></p>
+
+        {% if project.activations %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subscriber</th>
+                        <th>Unit</th>
+                        <th>Activation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in project.activations %}
+                        <tr>
+                            <td>{{ sub.first_name }} {{ sub.last_name }}</td>
+                            <td>
+                                {% if sub.multi_homes %}
+                                    {{ sub.multi_homes|length }} Units
+                                {% else %}
+                                    {{ sub.home.unit }}
+                                {% endif %}
+                            </td>
+                            <td>{{ sub.service_activated_on|date:"m/d/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No Activations</em></p>
+        {% endif %}
+
+        <p><b>Deactivations</b></p>
+
+        {% if project.deactivations %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subscriber</th>
+                        <th>Unit</th>
+                        <th>Deactivation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in project.deactivations %}
+                        <tr>
+                            <td>{{ sub.first_name }} {{ sub.last_name }}</td>
+                            <td>
+                            {% if sub.multi_homes %}
+                                {{ sub.multi_homes|length }} Units
+                            {% else %}
+                                {{ sub.home.unit }}
+                            {% endif %}
+                            </td>
+                            <td>{{ sub.service_deactivated_on|date:"m/d/Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No Deactivations</em></p>
+        {% endif %}
+
+        <br />
+    </div> 
+    {% endfor %}
+    #}
+{% endblock %}

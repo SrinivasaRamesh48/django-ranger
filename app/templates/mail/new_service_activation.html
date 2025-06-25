@@ -1,0 +1,18 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Scheduled Service Activation Processed{% endblock %}
+
+{% block content %}
+    <p><b>Scheduled Service Activation Processed</b></p>
+
+    <p><b>Project: </b>{{ data.subscriber.home.project.name }}</p>
+    <p><b>Address: </b>{{ data.subscriber.home.address }}</p>
+    <p><b>Unit: </b>{{ data.subscriber.home.unit }}</p>
+    <br/>
+    <p><b>Subscriber: </b>{{ data.subscriber.first_name }} {{ data.subscriber.last_name }}</p>
+    <p><b>Email: </b>{{ data.subscriber.primary_email }}</p>
+    <p><b>Phone: </b>{{ data.subscriber.primary_phone }}</p>
+    <br/>
+    <p><b>Service Plan: </b>{{ data.subscriber.service_plan.description }} - ${{ data.subscriber.service_plan.amount|floatformat:2 }}</p>
+    
+{% endblock %}

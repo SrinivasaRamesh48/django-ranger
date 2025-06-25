@@ -1,0 +1,72 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Service Throttled{% endblock %}
+
+{% block content %}
+    <p><b>Dear {{ data.statement.subscriber.first_name }},</b></p>
+    
+    <p>Your service has been throttled due to non-payment exceeding 3 months past due.</p>
+
+    <p>Please pay your balance in full or contact Uprise Fiber at <a href="tel:775-205-0222">775-205-0222</a> to resume service.</p>
+        
+    <table id="statement_table" style="width: 400px; font-size: 12px; border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <th colSpan="2" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #434343;">Account Summary</th>
+            </tr>
+            {% for item in data.statement.items %}
+                {% if item.description.statement_item_type_id == 1 %}
+                    <tr>
+                        <td style="padding: 10px 15px; width: 350px; padding-left: 0; text-align: left;">{{ item.description.description }}</td>
+                        <td style="padding: 10px 15px; width: 50px; padding-right: 0; text-align: right;">${{ item.amount|floatformat:2 }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <th colSpan="2" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #434343;">Charges</th>
+            </tr>
+            {% for item in data.statement.items %}
+                {% if item.description.statement_item_type_id == 2 %}
+                    <tr>
+                        <td style="padding: 10px 15px; width: 350px; padding-left: 0; text-align: left;">{{ item.description.description }}</td>
+                        <td style="padding: 10px 15px; width: 50px; padding-right: 0; text-align: right;">${{ item.amount|floatformat:2 }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            {% if data.statement.has_payments %}
+                <tr>
+                    <th colSpan="2" style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #434343;">Payments/Credits Received</th>
+                </tr>
+                {% for item in data.statement.items %}
+                    {% if item.description.statement_item_type_id == 3 %}
+                        <tr>
+                            <td style="padding: 10px 15px; width: 350px; padding-left: 0; text-align: left;">{{ item.description.description }}</td>
+                            <td style="padding: 10px 15px; width: 50px; padding-right: 0; text-align: right;">${{ item.amount|floatformat:2 }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </tbody>
+        <tfoot style="margin-top: 20px;">
+            <tr>
+                <th style="width: 350px; padding-left: 0; text-align: left; padding-bottom: 10px; border-bottom: 1px solid #434343;">Total Amount Due</th>
+                <th style="width: 50px; padding-right: 0; text-align: right; padding-bottom: 10px; border-bottom: 1px solid #434343;">
+                    ${{ data.statement.balance|floatformat:2 }}
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <p>
+        <small>
+            <b>Balance Due:</b> {{ data.statement.due_date|date:"m/d/Y" }}
+        </small>
+    </p>
+    
+    <br />
+    
+    <p>To pay your bill online <a href="https://uprisefiber.com/account/billing">Click Here.</a></p>
+    
+    <br />
+    <p>Sincerely,<br />The Uprise Fiber Team</p>
+{% endblock %}

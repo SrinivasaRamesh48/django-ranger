@@ -1,0 +1,50 @@
+
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Ranger - Payment Processed{% endblock %}
+
+{% block content %}
+    <style>
+        /* Basic styling for the definition list */
+        dl {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        dt {
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+        }
+        dd {
+            margin-left: 0;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        h2 {
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <h2>Payment Processed</h2>
+
+    <dl>
+        <dt>Subscriber</dt>
+        <dd>{{ data.subscriber_name }}</dd>
+
+        <dt>Payment Amount</dt>
+        <dd>{{ data.amount }}</dd>
+
+        <dt>Payment Method</dt>
+        <dd>{{ data.method }}</dd>
+
+        <dt>Timestamp</dt>
+        <dd>{{ data.timestamp }}</dd>
+
+        <dt>Merchant ID</dt>
+        <dd>{{ data.merchant_id }}</dd>
+    </dl>
+{% endblock %}

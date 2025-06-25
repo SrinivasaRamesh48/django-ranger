@@ -1,8 +1,15 @@
 from django.db import models
+import base64
 from django.db.models.functions import Substr  
 from django.core.exceptions import ObjectDoesNotExist  
 from .time_stamped_model_mixin import TimeStampedModelMixin
 from .mac_address_lookup import MacAddressLookup
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+
+
+APP_KEY_BASE64 = "K4cEH4zzn9wKuv3U4DKIb1pQz1vMJu+zKhXYUlzFDEs="  
+APP_KEY = base64.b64decode(APP_KEY_BASE64)
 
 
 class MacAddress(TimeStampedModelMixin, models.Model):
@@ -30,8 +37,20 @@ class MacAddress(TimeStampedModelMixin, models.Model):
             return MacAddressLookup.objects.get(mac_address=prefix).manufacturer
         except MacAddressLookup.DoesNotExist:
             return "Unknown"
+        
+        
+    def decrypt_laravel_value(self, encrypted_b64):
+        try:
+            data = base64.b64decode(encrypted_b64)
+            iv = data[:16]
+            ciphertext = data[16:]
+            cipher = AES.new(APP_KEY, AES.MODE_CBC, iv)
+            return unpad(cipher.decrypt(ciphertext), AES.block_size).decode()
+        except Exception as e:
+            return None
+
     def default_credentials(self):
         return {
-            "ssid": self.default_ssid,
-            "passkey": self.default_passkey
+            "ssid": self.decrypt_laravel_value(self.default_ssid),
+            "passkey": self.decrypt_laravel_value(self.default_passkey),
         }

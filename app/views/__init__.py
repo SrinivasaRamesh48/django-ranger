@@ -2,7 +2,7 @@ from .acp_view import SubscriberACPViewSet
 from .alert_types_view import AlertTypesViewSet
 from .alerts_view import AlertViewSet
 from .autopay_view import AutopayViewSet
-from .billing_view import SuccessfulTransactionWebhookView
+from .billing_view import  CreateTransactionWebhookView
 from .builders_view import BuilderViewSet
 from .bulk_message_view import *
 from .circuit_alerts_view import CircuitAlertViewSet

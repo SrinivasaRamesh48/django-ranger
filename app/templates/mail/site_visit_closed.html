@@ -1,0 +1,21 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Site Visit Closed{% endblock %}
+
+{% block content %}
+    <h2>Site Visit ({{ data.site_visit_id }}) Closed</h2>
+
+    <p><b>Ticket ID: </b>{{ data.ticket_id }}</p>
+    <p><b>Completed by: </b>{{ data.technician }}</p>
+    <br />
+    <p><b>Subscriber ID: </b>{{ data.subscriber_id }}</p>
+    <p><b>Subscriber: </b>{{ data.subscriber }}</p>
+    <p><b>Primary Email: </b>{{ data.email }}</p>
+    <p><b>Primary Phone: </b>{{ data.phone }}</p>
+    <br />
+    <p><b>Project: </b>{{ data.project }}</p>
+    <p><b>Address: </b>{{ data.address }}</p>
+    <p><b>Unit: </b>{{ data.unit }}</p>
+    <br />
+    <p><b>Completion Notes: </b>{{ data.notes }}</p>
+{% endblock %}

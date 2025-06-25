@@ -373,18 +373,36 @@ class HomeAlertSerializer(serializers.ModelSerializer):
         ]
         
 class MacAddressSerializer(serializers.ModelSerializer):
-    home = HomeSerializer(read_only=True)
-    manufacturer = serializers.CharField(read_only=True)
-    default_credentials = serializers.DictField(read_only=True)
-    home_id = serializers.PrimaryKeyRelatedField(queryset=Home.objects.all(), source='home', write_only=True)
+    decrypted_ssid = serializers.SerializerMethodField()
+    decrypted_passkey = serializers.SerializerMethodField()
+
     class Meta:
         model = MacAddress
         fields = [
-            'mac_address_id', 'address', 'cpe_id', 'cpe_serial_number', 
-            'firmware_update', 'firmware_update_manual', 'manual_registration',
-            'created_at', 'updated_at',
-            'home', 'home_id', 'manufacturer', 'default_credentials'
+            'mac_address_id',
+            'home',
+            'address',
+            'cpe_id',
+            'cpe_serial_number',
+            'firmware_update',
+            'firmware_update_manual',
+            'manual_registration',
+            'created_at',
+            'updated_at',
+            # Encrypted fields
+            'default_ssid',
+            'default_passkey',
+            # Decrypted versions
+            'decrypted_ssid',
+            'decrypted_passkey',
         ]
+
+    def get_decrypted_ssid(self, obj):
+        return obj.decrypt_laravel_value(obj.default_ssid)
+
+    def get_decrypted_passkey(self, obj):
+        return obj.decrypt_laravel_value(obj.default_passkey)
+
 
 class MeshCPEInstallSerializer(serializers.ModelSerializer):
     home = HomeSerializer(read_only=True)

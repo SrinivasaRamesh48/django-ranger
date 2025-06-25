@@ -1,0 +1,15 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Billing Notice{% endblock %}
+
+{% block content %}
+    <p><b>Hello {{ data.subscriber.first_name }},</b></p>
+
+    <p>We are reaching out to inform you that we have made a change on the back-end of our billing systems in order to enhance our customer experience.</p>
+
+    <p>For your privacy and security, all customer payment and billing data has been completely deleted from all Uprise systems. <b>As a result of this change, the credit card information you had on file has been erased and will need to be re-entered before making your next payment.</b> We apologize for any inconvenience this may cause.</p>
+
+    <p>If you have any questions or concerns please feel free to reach out to us by submitting a ticket within your <a href="https://uprisefiber.com/account">Customer Account Portal</a> or by calling us at <a href="tel:775-205-0222">775-205-0222.</a></p>
+
+    <p>Sincerely,<br />The Uprise Fiber Team</p>
+{% endblock %}

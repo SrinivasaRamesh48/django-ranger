@@ -1,0 +1,15 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Payment Processed{% endblock %}
+
+{% block content %}
+
+    <p><b>Hello {{ data.subscriber.first_name }},</b></p>
+
+    <p>Your payment of ${{ data.payment_amount|floatformat:2 }} was successfully processed.</p>
+
+    <p><a href="https://uprisefiber.com/account">Click Here to Access Your Account</a></p>
+
+    <p>Sincerely,<br />The Uprise Fiber Team</p>
+
+{% endblock %}

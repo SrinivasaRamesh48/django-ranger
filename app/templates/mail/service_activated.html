@@ -1,0 +1,15 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Service Activated{% endblock %}
+
+{% block content %}
+    <p><b>Hello {{ data.subscriber.first_name }},</b></p>
+
+    <p>Welcome to Uprise Fiber!</p>
+
+    <p>Your service has been activated. To connect to your service, use the SSID and Passkey entered at signup. You may update your SSID and Passkey at anytime by visiting your <a href="https://uprisefiber.com/account">Customer Account Portal</a>.</p> 
+
+    <p><a href="https://uprisefiber.com/account">Click Here to Access Your Account</a></p>
+
+    <p>Sincerely,<br />The Uprise Fiber Team</p>
+{% endblock %}

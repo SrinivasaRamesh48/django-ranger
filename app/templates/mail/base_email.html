@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>{% block title %}Uprise Fiber{% endblock %}</title>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet'>
+<style>
+  body {
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #434343;
+    padding: 0;
+    margin: 0;
+  }
+  h1 {
+    font-size: 22px;
+    text-align: left;
+  }
+  p {
+    font-size: 14px;
+    text-align: left;
+  }
+  a {
+    color: #FD7D19;
+    text-decoration: none;
+    text-align: left;
+  }
+  hr {
+    border: .5px solid #cccccc;
+    margin: 20px 0;
+  }
+  body > table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.table {
+    border-collapse: collapse;
+    min-width: 420px;
+  }
+  table.table > thead > tr > th,
+  table.table > tbody > tr > th,
+  table.table > thead > tr > td,
+  table.table > tbody > tr > td {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 5px;
+    font-size: 12px;
+    text-align: left;
+  }
+  table.table > tbody > tr > th,
+  table.table > thead > tr > th {
+    font-weight: 600;
+    width: 160px;
+  }
+  thead > tr > th,
+  tbody > tr > td,
+  tfoot > tr > td {
+    text-align: left;
+    padding: 0 15px;
+  }
+  tbody > tr > td {
+    padding: 10px 15px;
+    font-weight: 400;
+  }
+  tfoot {
+    margin-top: 20px;
+  }
+  tfoot > tr > td {
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-weight: 300;
+  }
+</style>
+</head>
+<body>
+  <br>
+  <table>
+    <tbody><tr><td>{% block content %}{% endblock %}</td></tr></tbody>
+    <tfoot>
+      <tr>
+        <td>Copyright &copy; {% now "Y" %} Uprise Fiber - All Rights Reserved</td>
+      </tr>
+    </tfoot>
+  </table>
+</body>
+</html>

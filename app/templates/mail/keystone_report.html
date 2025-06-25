@@ -1,0 +1,68 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Keystone Report - {{ date }}{% endblock %}
+
+{% block content %}
+    <h2>Keystone Canyon CPE Installation Report {{ date }}</h2>
+
+    <p><b>Appointments</b></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Timeslot</th>
+                <th>Technician</th>
+                <th>Unit</th>
+                <th>Subscriber</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in data.appointments %}
+                <tr>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.timeslot }}</td>
+                    <td>{{ appointment.technician }}</td>
+                    <td>{{ appointment.unit }}</td>
+                    <td>{{ appointment.subscriber }}</td>
+                    <td>{{ appointment.email }}</td>
+                    <td>{{ appointment.phone }}</td>
+                </tr>      
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br />
+    <br />
+    
+    <p><b>Completion Breakdown</b></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Subscriber</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Appointment</th>
+                <th>CPE Installed</th>
+                <th>Service Activated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for home in data.homes %}
+                <tr>
+                    <td>{{ home.unit }}</td>
+                    <td>{{ home.subscriber }}</td>
+                    <td>{{ home.email }}</td>
+                    <td>{{ home.phone }}</td>
+                    <td>{{ home.appointment }}</td>
+                    <td>{{ home.cpe_installed }}</td>
+                    <td>{{ home.service_activated }}</td>
+                </tr>      
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Leasing Referrals Report - {{ data.date }}{% endblock %}
+
+{% block content %}
+    <h2>Leasing Staff Referrals {{ data.date }}</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>200Mbps ($40)</th>
+                <th>500Mbps ($50)</th>
+                <th>1Gbps ($60)</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in data.projects %}
+            <tr>
+                <th colspan="5" style="background-color: #f2f2f2; font-weight: bold; text-align: left; padding: 8px;">{{ project.name }}</th>
+            </tr>
+                {% for row in project.staff %}
+                    <tr>
+                        <th style="font-weight: bold; text-align: left; padding-left: 15px;">{{ row.name }}</th>
+                        <td>{{ row.200 }}</td>
+                        <td>{{ row.500 }}</td>
+                        <td>{{ row.1 }}</td>
+                        <td>{{ row.count }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

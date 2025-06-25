@@ -1,0 +1,15 @@
+{% extends 'mail/base_email.html' %}
+
+{% comment %}
+This template is for sending bulk notifications.
+The title and content are rendered dynamically from the data passed into the task.
+- data.subject: The subject of the email, used for the <title> tag.
+- data.body: The raw HTML content of the email. The 'safe' filter is used
+             to ensure the HTML is rendered correctly and not escaped.
+{% endcomment %}
+
+{% block title %}{{ data.subject }}{% endblock %}
+
+{% block content %}
+    {{ data.body|safe }}
+{% endblock %}

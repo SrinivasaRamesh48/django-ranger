@@ -3,7 +3,7 @@ from app.views.acp_view import SubscriberACPViewSet
 from app.views.alerts_view import AlertViewSet
 from app.views.alert_types_view import AlertTypesViewSet
 from app.views.autopay_view import AutopayViewSet
-from app.views.billing_view import SuccessfulTransactionWebhookView
+from app.views.billing_view import CreateTransactionWebhookView
 from app.views.circuit_alerts_view import CircuitAlertViewSet
 from app.views.circuit_carriers_view import CircuitCarrierViewSet
 from app.views.home_alerts_view import HomeAlertViewSet
@@ -26,7 +26,8 @@ from app.views.user_roles_view import UserRolesViewSet
 
 urlpatterns = [
     # POST /successful_transaction_webhook -> BillingController@create_transaction
-    path('successful_transaction_webhook',SuccessfulTransactionWebhookView.as_view(),name='webhook-successful-transaction'),
+    path('successful_transaction_webhook/', CreateTransactionWebhookView.as_view(), name='successful_transaction_webhook'),
+
     
     
     

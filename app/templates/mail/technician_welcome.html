@@ -1,0 +1,12 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Welcome to Ranger!{% endblock %}
+
+{% block content %}
+    <h2>Welcome to Ranger, {{ data.name }}!</h2>
+    <p>Please login at <a href="{{ data.url }}" target="_blank">{{ data.url }}</a> using the credentials below. Upon logging in you will be asked to change your password.</p>
+
+    <p><b>URL: </b><a href="{{ data.url }}" target="_blank">{{ data.url }}</a></p>
+    <p><b>Email: </b>{{ data.recipient_email }}</p>
+    <p><b>Temporary Password: </b>{{ data.temp_password }}</p>
+{% endblock %}

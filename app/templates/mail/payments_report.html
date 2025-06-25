@@ -1,0 +1,38 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber Payments Report - {{ date }}{% endblock %}
+
+{% block content %}
+    <h1>Uprise Fiber Payments Report - {{ date }}<br /><small><small style="font-size: 12px; font-weight: 400;">Data From {{ data.start_date }} - {{ data.end_date }}</small></small></h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Web Payments</th>
+                {# <th>Fees</th> #}
+                {# <th>Net</th> #}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan="3" style="text-align: right; font-weight: bold; padding-right: 10px;">Totals</th>
+                <th>${{ data.optin_summary.payments|floatformat:2 }}</th>
+                {# <th>${{ data.optin_summary.fees|floatformat:2 }}</th> #}
+                {# <th>${{ data.optin_summary.net|floatformat:2 }}</th> #}
+            </tr>
+            {% for project in data.optin_projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.address }}</td>
+                    <td>{{ project.city }}</td>
+                    <td>${{ project.payments|floatformat:2 }}</td>
+                    {# <td>${{ project.fees|floatformat:2 }}</td> #}
+                    {# <td>${{ project.net|floatformat:2 }}</td> #}
+            </tr>      
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

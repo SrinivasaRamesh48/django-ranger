@@ -1,0 +1,16 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Uprise Fiber - Outstanding Balance Due{% endblock %}
+
+{% block content %}
+    <p><b>Dear {{ data.statement.subscriber.first_name }},</b></p>
+    
+    <p>You have an oustanding balance of <strong>${{ data.statement.balance|floatformat:2 }}</strong>.</p>
+
+    <p><small>A late fee of 10% and service suspension will occur on {{ data.statement.due_date|date:"m/d/Y" }} if balance is not paid in full.</small></p>
+    
+    <p>To pay your bill online <a href="https://uprisefiber.com/account/billing">Click Here.</a></p>
+    
+    <br />
+    <p>Sincerely,<br />The Uprise Fiber Team</p>
+{% endblock %}

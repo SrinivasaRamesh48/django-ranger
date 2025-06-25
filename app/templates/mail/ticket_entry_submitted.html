@@ -1,0 +1,24 @@
+{% extends 'mail/base_email.html' %}
+
+{% block title %}Ticket Entry Submitted from Ranger{% endblock %}
+
+{% block content %}
+    <h2>Ticket Entry ({{ data.ticket_entry_id }}) Submitted from Ranger</h2>
+
+    <p><b>Ticket ID: </b>{{ data.ticket_id }}</p>
+    <p><b>Status: </b>{{ data.status }}</p>
+    <p><b>Category: </b>{{ data.category }}</p>
+    <p><b>Submitted by: </b>{{ data.technician }}</p>
+    <br />
+    <p><b>Subscriber ID: </b>{{ data.subscriber_id }}</p>
+    <p><b>Subscriber: </b>{{ data.subscriber }}</p>
+    <p><b>Primary Email: </b>{{ data.email }}</p>
+    <p><b>Primary Phone: </b>{{ data.phone }}</p>
+    <br />
+    <p><b>Project: </b>{{ data.project }}</p>
+    <p><b>Address: </b>{{ data.address }}</p>
+    <p><b>Unit: </b>{{ data.unit }}</p>
+    <br />
+    <p><b>Notes: </b>{{ data.notes }}</p>
+    
+{% endblock %}
