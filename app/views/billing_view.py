@@ -3,17 +3,13 @@ from django.db import transaction
 from django.conf import settings
 from django.utils.decorators import method_decorator
 
-# DRF Imports
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-# Import the models and the Celery task
 from app.models import Payment, Subscriber, Statement, StatementItem, StatementItemDescription, SubscriberPaymentMethod
 from app.mail.payment_processed import send_payment_processed_email
 
-# Applying the transaction.atomic decorator to ensure all database operations are a single unit.
-# Note: DRF's APIView handles CSRF exemption for you, so we can remove `@csrf_exempt`.
 @method_decorator(transaction.atomic, name='dispatch')
 class CreateTransactionWebhookView(APIView):
     """

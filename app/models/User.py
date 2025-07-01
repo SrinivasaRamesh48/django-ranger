@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser # The base for custom user models
-from django.utils.translation import gettext_lazy as _ # For translatable strings
+from django.contrib.auth.models import AbstractUser 
+from django.utils.translation import gettext_lazy as _
 
 
 
@@ -26,12 +26,13 @@ class User(AbstractUser):
         related_name='users'
     )
 
-    # Laravel models implicitly handle created_at/updated_at. AbstractUser does not.
+   
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True) # Adding null=True, blank=True if not already
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True) # Adding null=True, blank=True if not already
 
     class Meta(AbstractUser.Meta):
         db_table = 'users'
+        app_label = 'app'
 
     def __str__(self):
         return self.name or self.username or f"User {self.user_id}"
