@@ -1,8 +1,9 @@
 from django.db import models
 from .user_roles import UserRoles  
-from .user_permission_type import UserPermissionType # Assuming UserPermissionType model exists
+from .user_permission_type import UserPermissionType
+from .time_stamped_model_mixin import TimeStampedModelMixin
 
-class UserPermissionDefaults(models.Model):
+class UserPermissionDefaults(TimeStampedModelMixin, models.Model):
     user_permission_defaults_id = models.AutoField(primary_key=True)
     user_role = models.ForeignKey(
         UserRoles,
@@ -16,8 +17,6 @@ class UserPermissionDefaults(models.Model):
         db_column='user_permission_type_id',
         related_name='permission_defaults'
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'user_permission_defaults'

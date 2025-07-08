@@ -1,15 +1,12 @@
 from django.db import models
-
-# Import all related models
-from .service_change_schedule_type import ServiceChangeScheduleType # Ensure this model exists
-from .subscriber import Subscriber # Ensure this model exists
-from .service_plan import ServicePlan # Ensure this model exists
-from .ticket import Ticket # Ensure this model exists (note: Laravel uses ticket_entry_id, assuming Ticket model)
-from .leasing_staff_red import LeasingStaffRed # Ensure this model exists
+from .service_change_schedule_type import ServiceChangeScheduleType 
+from .subscriber import Subscriber 
+from .service_plan import ServicePlan 
+from .ticket import Ticket
+from .leasing_staff_red import LeasingStaffRed 
 from .time_stamped_model_mixin import TimeStampedModelMixin
 
 class ServiceChangeSchedule(TimeStampedModelMixin, models.Model):
-    """Django equivalent of the Laravel ServiceChangeSchedule model."""
     service_change_schedule_id = models.AutoField(primary_key=True)
     ssid_1 = models.CharField(max_length=255, blank=True, null=True)
     passkey_1 = models.CharField(max_length=255, blank=True, null=True)

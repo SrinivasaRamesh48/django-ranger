@@ -1,7 +1,9 @@
 from django.db import models
 from .user_permission_type import UserPermissionType
 from .user import User
-class UserPermissions(models.Model):
+from app.models.time_stamped_model_mixin import TimeStampedModelMixin
+
+class UserPermissions(TimeStampedModelMixin, models.Model):
     user_permission_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
     User,
@@ -16,9 +18,6 @@ class UserPermissions(models.Model):
         db_column='user_permission_type_id',
         related_name='user_permissions'
     )
-  
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'user_permissions'

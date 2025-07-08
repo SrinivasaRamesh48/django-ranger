@@ -2,6 +2,8 @@ from django.db import models
 
 class MacAddressLookup(models.Model):
     mac_address_lookup_id = models.AutoField(primary_key=True)
+    mac_address = models.CharField(max_length=8, blank=True, null=True, db_index=True)
+    manufacturer_name = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         db_table = 'mac_address_lookup' 

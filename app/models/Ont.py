@@ -1,9 +1,9 @@
 from django.db import models
-from .node import Node                # Import the Node model
-from .ont_manufacturer import OntManufacturer # Import the OntManufacturer model
+from .node import Node             
+from .ont_manufacturer import OntManufacturer 
 
 class Ont(models.Model):
-    """Django equivalent of the Laravel Ont model."""
+
     ont_id = models.AutoField(primary_key=True)
     fsan = models.CharField(max_length=255)
     mac_address = models.CharField(max_length=17)

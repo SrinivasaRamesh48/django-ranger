@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import LoginView,FakeAuthenticateView,FakeGetActiveTicketView
 from app.views.acp_view import SubscriberACPViewSet
 from app.views.alerts_view import AlertViewSet
 from app.views.alert_types_view import AlertTypesViewSet
@@ -25,18 +26,15 @@ from app.views.user_company_view import UserCompanyViewSet
 from app.views.user_roles_view import UserRolesViewSet
 
 urlpatterns = [
+    path('login', LoginView.as_view(), name='api-login'),
+    path('authenticate',FakeAuthenticateView.as_view(), name='authenticate'),
+    path('active_ticket', FakeGetActiveTicketView.as_view(), name='active_ticket'),
     # POST /successful_transaction_webhook -> BillingController@create_transaction
     path('successful_transaction_webhook/', CreateTransactionWebhookView.as_view(), name='successful_transaction_webhook'),
-
-    
-    
-    
-    #  ACP
     path('allACP', SubscriberACPViewSet.as_view({'get': 'list'}), name='acp-list'),
     path('acp_enroll', SubscriberACPViewSet.as_view({'post': 'enroll'}), name='acp-enroll'),
     path('cancel_acp_enrollment/<int:pk>', SubscriberACPViewSet.as_view({'put': 'cancel_enrollment'}), name='acp-cancel-enrollment'),
-    
-    #  System Alerts
+
     path('alerts', AlertViewSet.as_view({'get': 'list'}), name='alert-list'),
     path('alerts', AlertViewSet.as_view({'post': 'create'}), name='alert-create'),
     path('alerts/<int:alert_id>', AlertViewSet.as_view({'put': 'update'}), name='alert-update'),

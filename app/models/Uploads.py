@@ -1,13 +1,13 @@
 from django.db import models
 
-# Import all related models
 from .project import Project 
 from .circuit import Circuit 
  
 from .subscriber import Subscriber
 from .upload_types import UploadType 
+from .time_stamped_model_mixin import TimeStampedModelMixin
 
-class Uploads(models.Model):
+class Uploads(TimeStampedModelMixin, models.Model):
     upload_id = models.AutoField(primary_key=True)
     project = models.ForeignKey(
         Project,
@@ -46,8 +46,6 @@ class Uploads(models.Model):
     )
     name = models.CharField(max_length=255) 
     path = models.FileField(upload_to='uploads/') # 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'uploads'

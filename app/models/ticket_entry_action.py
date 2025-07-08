@@ -1,7 +1,8 @@
 from django.db import models
-from .ticket_entry_action_type import TicketEntryActionType # Import the TicketEntryActionType model
-class TicketEntryAction(models.Model):
-    """Django equivalent of the Laravel TicketEntryAction model."""
+from .ticket_entry_action_type import TicketEntryActionType
+from .time_stamped_model_mixin import TimeStampedModelMixin
+
+class TicketEntryAction(TimeStampedModelMixin, models.Model):
     ticket_entry_action_id = models.AutoField(primary_key=True)
     
     # Relationships

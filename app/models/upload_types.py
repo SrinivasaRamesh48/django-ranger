@@ -5,7 +5,7 @@ class UploadType(models.Model):
     description = models.CharField(max_length=255, unique=True) 
 
     class Meta:
-        db_table = 'upload_types' # Matches your Laravel protected $table
+        db_table = 'upload_types' 
         app_label = 'app'
 
     def __str__(self):

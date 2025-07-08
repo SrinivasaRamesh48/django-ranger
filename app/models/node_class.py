@@ -1,11 +1,11 @@
 from django.db import models
+from .time_stamped_model_mixin import TimeStampedModelMixin
 
-class NodeClass(models.Model):
+
+
+class NodeClass(TimeStampedModelMixin, models.Model):
     node_class_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, unique=True) 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
     class Meta:
         db_table = 'node_class' # Note: Table name is singular as per Laravel model
         app_label = 'app'

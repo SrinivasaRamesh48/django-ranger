@@ -2,12 +2,12 @@
 from django.db import models
 from .user import User
 from .alert_type import AlertType
-class SubscriberAlert(models.Model):
-    """Django equivalent of the Laravel SubscriberAlert model."""
+from .time_stamped_model_mixin import TimeStampedModelMixin
+
+class SubscriberAlert(TimeStampedModelMixin, models.Model):
     subscriber_alert_id = models.AutoField(primary_key=True)
     message = models.TextField()
-    active = models.BooleanField(default=True)
-    
+    active = models.IntegerField(default=1)
     # Relationships
     subscriber = models.ForeignKey('Subscriber', on_delete=models.CASCADE, related_name='alerts', db_column='subscriber_id')
     alert_type = models.ForeignKey(AlertType, on_delete=models.PROTECT, db_column='alert_type_id')
@@ -30,8 +30,6 @@ class SubscriberAlert(models.Model):
         db_column='updated_by'
     )
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         db_table = "subscriber_alerts"

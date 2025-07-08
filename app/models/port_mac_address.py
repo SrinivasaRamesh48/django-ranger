@@ -2,7 +2,7 @@ from django.db import models
 from app.models.mac_address import MacAddress
 
 class PortMacAddress(models.Model):
-    """Django equivalent of the Laravel PortMacAddress model."""
+    id = models.AutoField(primary_key=True)
     node = models.ForeignKey('Node', on_delete=models.CASCADE, db_column='node_Id')
     node_switch_unit = models.IntegerField()
     node_switch_module = models.IntegerField()

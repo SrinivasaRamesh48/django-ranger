@@ -3,7 +3,6 @@ from .user import User
 from .ticket_category import TicketCategory
 from .time_stamped_model_mixin import TimeStampedModelMixin
 class Ticket(TimeStampedModelMixin, models.Model):
-    """Django equivalent of the Laravel Ticket model."""
     ticket_id = models.AutoField(primary_key=True)
     opened_on = models.DateTimeField(auto_now_add=True)
     reopened_on = models.DateTimeField(null=True, blank=True)

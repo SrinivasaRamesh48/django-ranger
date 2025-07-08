@@ -1,6 +1,7 @@
 from django.db import models
+from .time_stamped_model_mixin import TimeStampedModelMixin
 
-class UserPermissionCategory(models.Model):
+class UserPermissionCategory(TimeStampedModelMixin, models.Model):
     user_permission_category_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255, unique=True)
 

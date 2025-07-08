@@ -1,8 +1,10 @@
 from django.db import models
-from .user_permission_category import UserPermissionCategory     # Import the UserPermissionCategory model
-from .user_permission_subcategory import UserPermissionSubcategory # Import the UserPermissionSubcategory model
 
-class UserPermissionType(models.Model):
+from app.models.time_stamped_model_mixin import TimeStampedModelMixin
+from .user_permission_category import UserPermissionCategory  
+from .user_permission_subcategory import UserPermissionSubcategory
+
+class UserPermissionType(TimeStampedModelMixin, models.Model):
     user_permission_type_id = models.AutoField(primary_key=True)
     user_permission_category = models.ForeignKey(
         UserPermissionCategory,
@@ -18,9 +20,7 @@ class UserPermissionType(models.Model):
         related_name='permission_types'
     )
     identifier = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True, null=True) 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    description = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'user_permission_type'

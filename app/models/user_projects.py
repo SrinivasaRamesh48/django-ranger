@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from .project import Project
-
+from app.models.time_stamped_model_mixin import TimeStampedModelMixin
 User = get_user_model()
 
-class UserProjects(models.Model):
+class UserProjects(TimeStampedModelMixin, models.Model):
     user_project_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         User,
@@ -20,8 +20,7 @@ class UserProjects(models.Model):
         related_name='user_projects'
     )
    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         db_table = 'user_projects'

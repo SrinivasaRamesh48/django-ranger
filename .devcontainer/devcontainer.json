@@ -1,0 +1,10 @@
+{
+  "name": "My Django App",
+  "context": "..",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",           // Name of your Django service in docker-compose
+  "workspaceFolder": "/app",  // Match your WORKDIR in Dockerfile
+  "settings": {
+    "python.pythonPath": "/usr/local/bin/python" // optional
+  }
+}

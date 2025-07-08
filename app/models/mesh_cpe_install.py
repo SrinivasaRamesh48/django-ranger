@@ -8,6 +8,7 @@ class MeshCPEInstall(TimeStampedModelMixin, models.Model):
     address = models.CharField(max_length=17) # MAC Address
     cpe_id = models.CharField(max_length=100, blank=True, null=True)
     cpe_serial_number = models.CharField(max_length=100, blank=True, null=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
     class Meta:
         db_table = 'mesh_cpe_installs'
         ordering = ['-created_at']

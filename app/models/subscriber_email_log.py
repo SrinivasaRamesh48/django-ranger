@@ -2,10 +2,9 @@
 from django.db import models
 from app.models.time_stamped_model_mixin import TimeStampedModelMixin
 class SubscriberEmailLog(TimeStampedModelMixin, models.Model):
-    """Django equivalent of the Laravel SubscriberEmailLog model."""
     subscriber_email_log_id = models.AutoField(primary_key=True)
-    sent_to = models.EmailField()
-    success = models.BooleanField()
+    sent_to = models.CharField(max_length=555,default='')
+    success = models.IntegerField(default=0)
 
     # Relationships
     item = models.ForeignKey('EmailLogItem', on_delete=models.CASCADE, db_column='email_log_item_id')
