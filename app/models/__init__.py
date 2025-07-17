@@ -72,3 +72,4 @@ from .user_permission_type import UserPermissionType
 from .user_projects import UserProjects
 from .user_roles import UserRoles
 from .us_state import UsState
+from .multi_home_subscriber_home import MultiHomeSubscriberHome

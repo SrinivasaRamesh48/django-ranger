@@ -5,7 +5,7 @@ class TicketEntryActionType(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
     description_past_tense = models.CharField(max_length=255, blank=True, null=True)
     identifier = models.CharField(max_length=50, unique=True)
-    display = models.ImageField(default=0)
+    display = models.IntegerField(default=0)
     icon = models.CharField(max_length=50, blank=True, null=True)
     display_message = models.CharField(max_length=255, blank=True, null=True)
 

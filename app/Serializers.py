@@ -1,18 +1,27 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from app.models import (
     Alert, AlertType, User, Outage, Project, BulkMessageType,
     UsState, CircuitCarrier, Circuit, CPEControlLogType, CPEControlLog,
     DispatchAppointmentType, DispatchAppointmentTimeslot, Ticket,
     MacAddress, NodeClass, NodeType, Subscriber, HomeAlert,
     MeshCPEInstall, Home, NodeFrame, Node, DowntimeEvent, EmailLogItem, BulkEmailTemplate, BulkPhoneTemplate,
-    DispatchAppointment, InterestFormLog, CircuitAlert, OltSnapshot, OntManufacturer, Ont, OutageHomesEffected, PasswordResetToken, Payment, SubscriberPaymentMethod, Statement, PortMacAddress, Builder, SubscriptionType ,ServicePlan, ProjectNetworkType,QBOToken,ProjectAlert,RateLimitLog,ReportType,SavedReport,ServiceChangeSchedule,ServiceChangeScheduleType,LeasingStaffRed,SMSLogItem,StatementItem,StatementItemDescription,StatementItemType,SubscriberAlert,SubscriberEmailLog,SubscriberSMSLog,TicketCategory,TicketEntry,TicketEntryAction,TicketStatus,TicketEntryActionType,TicketStatus,UploadType,Uploads,UserCompany,UserPermissionCategory,UserPermissionDefaults,UserPermissions,UserPermissionSubcategory,UserPermissionType,UserProjects,UserRoles,UsState, multi_home_subscriber_home
+    DispatchAppointment, InterestFormLog, CircuitAlert, OltSnapshot, OntManufacturer, Ont, OutageHomesEffected, PasswordResetToken, Payment, SubscriberPaymentMethod, Statement, PortMacAddress, Builder, SubscriptionType ,ServicePlan, ProjectNetworkType,QBOToken,ProjectAlert,RateLimitLog,ReportType,SavedReport,ServiceChangeSchedule,ServiceChangeScheduleType,LeasingStaffRed,SMSLogItem,StatementItem,StatementItemDescription,StatementItemType,SubscriberAlert,SubscriberEmailLog,SubscriberSMSLog,TicketCategory,TicketEntry,TicketEntryAction,TicketStatus,TicketEntryActionType,TicketStatus,UploadType,Uploads,UserCompany,UserPermissionCategory,UserPermissionDefaults,UserPermissions,UserPermissionSubcategory,UserPermissionType,UserProjects,UserRoles,UsState, multi_home_subscriber_home,subscriber
 )
 
 
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    currentPassword = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    confirmPassword = serializers.CharField(required=True)
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', 'first_name', 'last_name']
+        model = get_user_model()
+        fields = ['user_id', 'email'] 
+
 
 class AlertTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -208,13 +217,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = [
             'project_id', 'name', 'address', 'city', 'zip_code', 'longitude', 'latitude', 
             'activation_date', 'active', 'domain_name', 'free_month', 'qbo_customer_id', 
-            'rm_property_id', 'created_at', 'updated_at',
-            'us_state', 'state_id',
-            'builder', 'builder_id',
-            'subscription_type', 'subscription_type_id',
-            'service_plan', 'bulk_service_plan_id',
-            'circuit', 'circuit_id'
+            'rm_property_id',
+            'us_state', 'builder', 'subscription_type', 'service_plan', 'circuit',
+            'state_id', 'builder_id', 'subscription_type_id', 'bulk_service_plan_id', 'circuit_id'
         ]
+        read_only_fields = ['created_at', 'updated_at']
 
 class AlertSerializer(serializers.ModelSerializer):
     alert_type = AlertTypeSerializer(read_only=True)
@@ -838,7 +845,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
             'service_plan', 'service_plan_id',
             'node', 'node_id',
             'tickets', 'open_tickets', 'statement', 'statements', 'payments', 'payment_methods',
-            'multi_homes', 'alerts'
+            'multi_homes', 'alerts', 'acp_application_id'
         ]
         extra_kwargs = {
             'password': {'write_only': True}
@@ -918,7 +925,7 @@ class TicketEntrySerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
-        # Make fields like 'user' write-only, as the user is set from the request,
+        # Make fields like 'user' write_only, as the user is set from the request,
         # not from the request body.
         read_only_fields = ['created_at', 'updated_at']
         extra_kwargs = {
@@ -990,32 +997,11 @@ class UserPermissionSubcategorySerializer(serializers.ModelSerializer):
         ]
 
 class UserPermissionTypeSerializer(serializers.ModelSerializer):
-    user_permission_category = UserPermissionCategorySerializer(read_only=True)
-    user_permission_subcategory = UserPermissionSubcategorySerializer(read_only=True)
-
     class Meta:
         model = UserPermissionType
         fields = [
-            "__all__"
-        ]
-
-class UserPermissionSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    type = UserPermissionTypeSerializer(read_only=True)
-    class Meta:
-        model = UserPermissions
-        fields = [
-          "__all__"
-        ]
-
-class UserPermissionDefaultsSerializer(serializers.ModelSerializer):
-    UserRole = UserRolesSerializer(read_only=True)
-    UserPermissionType = UserPermissionTypeSerializer(read_only=True)
-
-    class Meta:
-        model = UserPermissionDefaults
-        fields = [
-          "__all__"
+            'user_permission_type_id', 'identifier', 'description',
+            'user_permission_category', 'user_permission_subcategory'
         ]
 
 class UserProjectsSerializer(serializers.ModelSerializer):
@@ -1027,3 +1013,54 @@ class UserProjectsSerializer(serializers.ModelSerializer):
         fields = [
             "__all__"
         ]
+
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    service_plan = ServicePlanSerializer(read_only=True)
+    home = HomeSerializer(read_only=True)
+    multi_homes = serializers.SerializerMethodField()
+    open_tickets = serializers.ReadOnlyField()
+    active_statement = serializers.ReadOnlyField()
+    active_alerts = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Subscriber
+        fields = [
+            'subscriber_id',
+            'first_name',
+            'last_name',
+            'primary_email',
+            'username',
+            'primary_phone',
+            'service_activated_on',
+            'service_deactivated_on',
+            'suspended',
+            'multi_home_subscriber',
+            'pause_billing',
+            'home',
+            'service_plan',
+            'node',
+            'multi_homes',
+            'open_tickets',
+            'active_statement',
+            'active_alerts',
+            'created_at',
+            'updated_at',
+            'acp_application_id',
+        ]
+        # It's good practice to ensure the password is never sent in a response.
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def get_multi_homes(self, obj):
+        """
+        This method checks if the subscriber is a multi-home subscriber and returns
+        the serialized data for their additional homes if they are.
+        'obj' is the Subscriber instance.
+        """
+        if obj.multi_home_subscriber:
+            # 'obj.multi_homes.all()' accesses the prefetched data from the view
+            multi_homes_qs = obj.multi_homes.all()
+            return MultiHomeSubscriberHomeSerializer(multi_homes_qs, many=True).data
+        return None

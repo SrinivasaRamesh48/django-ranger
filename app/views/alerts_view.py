@@ -20,14 +20,9 @@ class AlertViewSet(viewsets.ModelViewSet):
     lookup_field = 'alert_id' # To use 'alert_id' in the URL instead of 'pk'
 
     def perform_create(self, serializer):
-        """
-        Custom logic to run when a new alert is created (replaces store()).
-        """
+        # Custom logic to run when a new alert is created.
         user = self.request.user
-        # The 'active' status is in the validated data from the request
         is_active = serializer.validated_data.get('active', False)
-        
-        # This is where we inject the user IDs, similar to the Laravel controller
         serializer.save(
             activated_by=user,
             updated_by=user,
@@ -35,22 +30,14 @@ class AlertViewSet(viewsets.ModelViewSet):
         )
 
     def perform_update(self, serializer):
-        """
-        Custom logic to run when an existing alert is updated (replaces update()).
-        """
+        # Custom logic to run when an existing alert is updated.
         user = self.request.user
-        # Get the instance being updated to check its original 'active' state
         instance = serializer.instance 
-        # Get the new 'active' state from the request data
         is_active = serializer.validated_data.get('active', instance.active)
-        
-        # Determine the 'deactivated_by' field based on the NEW active state
         deactivated_by = None
         if instance.active and not is_active:
-            # The alert was active and is now being deactivated
             deactivated_by = user
         elif not instance.active and not is_active:
-            # If it was already inactive, preserve who deactivated it originally
             deactivated_by = instance.deactivated_by
             
         serializer.save(

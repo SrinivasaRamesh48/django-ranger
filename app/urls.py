@@ -1,10 +1,15 @@
 from django.urls import path
-from .views import LoginView,FakeAuthenticateView,FakeGetActiveTicketView
+
+from app import views
+from app.views.register_view import LogoutView,RegisterView,LoginView,FakeGetActiveTicketView,AuthenticateView,ResetMyPasswordView
+from app.views.subscriber_view import SubscriberListView
 from app.views.acp_view import SubscriberACPViewSet
 from app.views.alerts_view import AlertViewSet
 from app.views.alert_types_view import AlertTypesViewSet
 from app.views.autopay_view import AutopayViewSet
 from app.views.billing_view import CreateTransactionWebhookView
+from app.views.bulk_message_view import BulkMessageEmailNodesView, BulkMessagePhoneNodesView, BulkMessagePhoneTemplateView, BulkMessageSendEmailsView, BulkMessageSubscriberEmailLogView, BulkMessageSubscriberSMSLogView, BulkMessageView, BulkMessageSendSMSView
+from app.views.bulk_message_view import BulkMessageTypesView, BulkMessageNewEmailTemplateView, BulkMessageNewPhoneTemplateView, BulkMessageEditEmailTemplateView, BulkMessageEditPhoneTemplateView, BulkMessageRemoveEmailTemplateView, BulkMessageRemovePhoneTemplateView, BulkMessageEmailTemplateView
 from app.views.circuit_alerts_view import CircuitAlertViewSet
 from app.views.circuit_carriers_view import CircuitCarrierViewSet
 from app.views.home_alerts_view import HomeAlertViewSet
@@ -24,12 +29,21 @@ from app.views.uploads_view import download_file_view
 from app.views.us_states_view import UsStateViewSet
 from app.views.user_company_view import UserCompanyViewSet
 from app.views.user_roles_view import UserRolesViewSet
+from app.views.user_view import PermissionTypesView,TechnicianViewSet
 
 urlpatterns = [
-    path('login', LoginView.as_view(), name='api-login'),
-    path('authenticate',FakeAuthenticateView.as_view(), name='authenticate'),
+    path('allSubscribers', SubscriberListView.as_view(), name='subscriber-list'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('authenticate/', AuthenticateView.as_view(), name='authenticate'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('reset_my_password', ResetMyPasswordView.as_view(), name='reset_my_password'),
     path('active_ticket', FakeGetActiveTicketView.as_view(), name='active_ticket'),
+    
+    
     # POST /successful_transaction_webhook -> BillingController@create_transaction
+    
+    
     path('successful_transaction_webhook/', CreateTransactionWebhookView.as_view(), name='successful_transaction_webhook'),
     path('allACP', SubscriberACPViewSet.as_view({'get': 'list'}), name='acp-list'),
     path('acp_enroll', SubscriberACPViewSet.as_view({'post': 'enroll'}), name='acp-enroll'),
@@ -100,7 +114,31 @@ urlpatterns = [
     #  User
     path('user_companies', UserCompanyViewSet.as_view({'get': 'list'}), name='user-company-list'),
     path('user_roles', UserRolesViewSet.as_view({'get': 'list'}), name='user-roles-list'),
+
+
+    #  Message
+    path('bulk_message_email_checkbox_nodes/', BulkMessageEmailNodesView.as_view(), name='bulk-message-email-checkbox-nodes'),
+    path('bulk_message_phone_checkbox_nodes/', BulkMessagePhoneNodesView.as_view(), name='bulk-message-phone-checkbox-nodes'),
+    path('bulk_message_send_emails/', BulkMessageSendEmailsView.as_view(),name='bulk-message-send-emails'),
+    path('bulk_message_send_sms/', BulkMessageSendSMSView.as_view(),name='bulk-message-send-sms'),
+    path('bulk_message_subscriber_email_log/<int:id>/', BulkMessageSubscriberEmailLogView.as_view(), name='bulk-message-subscriber-email-log'),
+    path('bulk_message_subscriber_sms_log/<int:id>/', BulkMessageSubscriberSMSLogView.as_view(), name='bulk-message-subscriber-sms-log'),
+    path('bulk_message_types/', BulkMessageTypesView.as_view(), name='bulk-message-types'),
+    path('bulk_message_new_email_template/', BulkMessageNewEmailTemplateView.as_view(), name='bulk-message-new-email-template'),
+    path('bulk_message_new_phone_template/', BulkMessageNewPhoneTemplateView.as_view(), name='bulk-message-new-phone-template'),
+    path('bulk_message_edit_email_template/', BulkMessageEditEmailTemplateView.as_view(), name='bulk-message-edit-email-template'),
+    path('bulk_message_edit_phone_template/', BulkMessageEditPhoneTemplateView.as_view(), name='bulk-message-edit-phone-template'),
+    path('bulk_message_remove_email_template/<int:id>/', BulkMessageRemoveEmailTemplateView.as_view(), name='bulk-message-remove-email-template'),
+    path('bulk_message_remove_phone_template/<int:id>/', BulkMessageRemovePhoneTemplateView.as_view(), name='bulk-message-remove-phone-template'),
+    path('bulk_message_email_template/<int:id>/', BulkMessageEmailTemplateView.as_view(), name='bulk-message-email-template'),
+    path('bulk_message_phone_template/<int:id>/', BulkMessagePhoneTemplateView.as_view(), name='bulk-message-phone-template'),
     
     
-    
+    # technician
+    path('permission-types/', PermissionTypesView.as_view(), name='permission-types'),
+    path('technicians/', TechnicianViewSet.as_view({'get': 'list'}), name='technician-list'),
+    path('technicians/<int:pk>/',TechnicianViewSet.as_view({'get': 'retrieve', 'put': 'update'}), name='technician-detail'),
+    path('technicians/<int:pk>/reset_password/',TechnicianViewSet.as_view({'post': 'reset_password'}), name='technician-reset-password'),
+    path('technicians/<int:pk>/update_permissions/',TechnicianViewSet.as_view({'post': 'update_permissions'}), name='technician-update-permissions'),
+
     ]

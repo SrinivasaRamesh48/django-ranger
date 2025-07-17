@@ -12,13 +12,10 @@ from app.mail.payment_processed import send_payment_processed_email
 
 @method_decorator(transaction.atomic, name='dispatch')
 class CreateTransactionWebhookView(APIView):
-    """
-    A DRF APIView to handle the successful transaction webhook.
-    """
+    
+    # Handles the POST request from the payment provider.
     def post(self, request, *args, **kwargs):
-        """Handles the POST request from the payment provider."""
         try:
-            # DRF automatically parses the JSON body into request.data
             payload_data = request.data.get('data', {}).get('object', {})
 
             if not payload_data.get('id'):

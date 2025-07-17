@@ -8,11 +8,14 @@ class User(AbstractUser , TimeStampedModelMixin):
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(_('full name'), max_length=255)
     email = models.EmailField(_('email address'), unique=True) 
+    USERNAME_FIELD = 'email'        
+    REQUIRED_FIELDS = ['username']
     work_phone = models.CharField(max_length=55, blank=True, null=True)
     cell_phone = models.CharField(max_length=55, blank=True, null=True)
     user_company = models.ForeignKey(
         'UserCompany',
         on_delete=models.CASCADE, 
+        null=True,
         default=1,
         db_column='user_company_id',
         related_name='users'
@@ -35,6 +38,6 @@ class User(AbstractUser , TimeStampedModelMixin):
         app_label = 'app'
 
     def __str__(self):
-        return self.name or self.username or f"User {self.user_id}"
+        return self.email
 
 
