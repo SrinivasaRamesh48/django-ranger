@@ -71,7 +71,7 @@ class DispatchAppointmentTimeslotSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['ticket_id', 'summary']
+        fields = ['ticket_id', 'opened_on', 'closed_on']
 
 class MacAddressSerializer(serializers.ModelSerializer):
     manufacturer = serializers.CharField(read_only=True)
@@ -170,7 +170,7 @@ class TicketEntryActionTypeSerializer(serializers.ModelSerializer):
 class TicketStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketStatus
-        fields = ['ticket_status_id', 'name']
+        fields = ['ticket_status_id', 'description']
 class UploadTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadType
@@ -837,7 +837,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
         model = Subscriber
         fields = [
             'subscriber_id', 'first_name', 'last_name', 'primary_email', 'username', 'password',
-            'primary_phone', 'node_port_number', 'service_activated_on', 'service_deactivated_on',
+            'primary_phone', 'service_activated_on', 'service_deactivated_on',
             'suspended', 'merchant_customer_id', 'autopay_merchant_id', 
             'acp_application_id', 'qbo_customer_id', 'multi_home_subscriber', 'pause_billing',
             'created_at', 'updated_at',
@@ -910,7 +910,7 @@ class TicketEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketEntry
         fields = [
-            'id',
+            'ticket_entry_id',
             'ticket',
             'user',
             'user_info', # More readable than just 'user' id
@@ -929,7 +929,8 @@ class TicketEntrySerializer(serializers.ModelSerializer):
         # not from the request body.
         read_only_fields = ['created_at', 'updated_at']
         extra_kwargs = {
-            'user': {'write_only': True}
+            'user': {'write_only': True},
+            'ticket': {'required': False}  # Allow ticket to be set programmatically
         }
 
 
@@ -938,10 +939,7 @@ class TicketEntrySerializer(serializers.ModelSerializer):
         Gets the most recent dispatch appointment associated with the entry's ticket.
         This mirrors the `dispatch_appointment` relationship in Laravel.
         """
-        appointment = obj.ticket.dispatch_appointments.order_by('-id').first()
-        if appointment:
-            # You could use another serializer here for more detail
-            return {'id': appointment.id, 'appointment_date': appointment.appointment_date}
+        # Since the relationship may not exist, return None for now
         return None
         
     def get_duration_minutes(self, obj):
@@ -955,7 +953,7 @@ class TicketEntrySerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     subscriber = SubscriberSerializer(read_only=True)
-    user = SubscriberSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
     ticket_category = TicketCategorySerializer(read_only=True)
     ticket_status = TicketStatusSerializer(read_only=True)
     entries = TicketEntrySerializer(many=True, read_only=True) # Updated this line

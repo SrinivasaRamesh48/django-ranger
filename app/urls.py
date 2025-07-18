@@ -24,14 +24,19 @@ from app.views.ont_manufacturer_view import OntManufacturerViewSet
 from app.views.port_mac_address_view import PortMacAddressViewSet
 from app.views.subscriber_alerts_view import SubscriberAlertViewSet
 from app.views.subscription_types_view import SubscriptionTypeViewSet
-from app.views.ticket_categories_view import TicketCategoryViewSet
+from app.views.tickets_view import TicketViewSet
 from app.views.uploads_view import download_file_view
 from app.views.us_states_view import UsStateViewSet
 from app.views.user_company_view import UserCompanyViewSet
 from app.views.user_roles_view import UserRolesViewSet
 from app.views.user_view import PermissionTypesView,TechnicianViewSet
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+router = DefaultRouter()
+router.register(r'allTickets', TicketViewSet, basename='tickets')
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('allSubscribers', SubscriberListView.as_view(), name='subscriber-list'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
@@ -108,8 +113,7 @@ urlpatterns = [
     # projects
      path('subscription_types', SubscriptionTypeViewSet.as_view({'get': 'list'}), name='subscription-type-list'),
      
-    #  Ticket 
-    path('ticket_categories', TicketCategoryViewSet.as_view({'get': 'list'}), name='ticket-category-list'),
+    
     
     #  User
     path('user_companies', UserCompanyViewSet.as_view({'get': 'list'}), name='user-company-list'),
@@ -140,5 +144,16 @@ urlpatterns = [
     path('technicians/<int:pk>/',TechnicianViewSet.as_view({'get': 'retrieve', 'put': 'update'}), name='technician-detail'),
     path('technicians/<int:pk>/reset_password/',TechnicianViewSet.as_view({'post': 'reset_password'}), name='technician-reset-password'),
     path('technicians/<int:pk>/update_permissions/',TechnicianViewSet.as_view({'post': 'update_permissions'}), name='technician-update-permissions'),
+    
+    
+    #  Ticket
+    
+    
+    path('create_ticket/', TicketViewSet.as_view({'post': 'create'}), name='create_ticket'),
+    path('update_ticket/', TicketViewSet.as_view({'post': 'update_ticket'}), name='update_ticket'),
+    path('create_ticket_entry/', TicketViewSet.as_view({'post': 'create_ticket_entry'}), name='create_ticket_entry'),
+    path('delete_ticket_entry/', TicketViewSet.as_view({'post': 'delete_ticket_entry'}), name='delete_ticket_entry'),
+    path('active_ticket/', TicketViewSet.as_view({'get': 'get_active_ticket'}), name='active_ticket'),
+    path('tickets_chart_data/<str:filter>/<str:timeframe>/', TicketViewSet.as_view({'get': 'tickets_chart_data'}), name='tickets_chart_data'),
 
     ]
