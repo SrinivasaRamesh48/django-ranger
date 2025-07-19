@@ -8,8 +8,10 @@ from app.views.alerts_view import AlertViewSet
 from app.views.alert_types_view import AlertTypesViewSet
 from app.views.autopay_view import AutopayViewSet
 from app.views.billing_view import CreateTransactionWebhookView
+from app.views.builders_view import BuilderViewSet
 from app.views.bulk_message_view import BulkMessageEmailNodesView, BulkMessagePhoneNodesView, BulkMessagePhoneTemplateView, BulkMessageSendEmailsView, BulkMessageSubscriberEmailLogView, BulkMessageSubscriberSMSLogView, BulkMessageView, BulkMessageSendSMSView
 from app.views.bulk_message_view import BulkMessageTypesView, BulkMessageNewEmailTemplateView, BulkMessageNewPhoneTemplateView, BulkMessageEditEmailTemplateView, BulkMessageEditPhoneTemplateView, BulkMessageRemoveEmailTemplateView, BulkMessageRemovePhoneTemplateView, BulkMessageEmailTemplateView
+from app.views.circuit_view import CircuitViewSet
 from app.views.circuit_alerts_view import CircuitAlertViewSet
 from app.views.circuit_carriers_view import CircuitCarrierViewSet
 from app.views.home_alerts_view import HomeAlertViewSet
@@ -54,9 +56,8 @@ urlpatterns = [
     path('acp_enroll', SubscriberACPViewSet.as_view({'post': 'enroll'}), name='acp-enroll'),
     path('cancel_acp_enrollment/<int:pk>', SubscriberACPViewSet.as_view({'put': 'cancel_enrollment'}), name='acp-cancel-enrollment'),
 
-    path('alerts', AlertViewSet.as_view({'get': 'list'}), name='alert-list'),
-    path('alerts', AlertViewSet.as_view({'post': 'create'}), name='alert-create'),
-    path('alerts/<int:alert_id>', AlertViewSet.as_view({'put': 'update'}), name='alert-update'),
+    path('alerts', AlertViewSet.as_view({'get': 'list', 'post': 'create'}), name='alert-list'),
+    path('alerts/<int:alert_id>', AlertViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='alert-detail'),
     path('alert_types', AlertTypesViewSet.as_view({'get': 'list'}), name='alert-type-list'),
     
     # Circuit Alerts
@@ -70,6 +71,14 @@ urlpatterns = [
 
     # Circuits
     path('circuit_carriers', CircuitCarrierViewSet.as_view({'get': 'list'}), name='circuit-carrier-list'),
+    path('builders', BuilderViewSet.as_view({'get': 'list'}), name='builder-list'),
+    path('allCircuits/', CircuitViewSet.as_view({'get': 'list'}), name='circuit-index'),
+    path('circuits_full/', CircuitViewSet.as_view({'get': 'circuits_full'}), name='circuit-full-list'),
+    path('circuits/', CircuitViewSet.as_view({'post': 'create'}), name='circuit-store'),
+    path('circuits/<int:pk>/', CircuitViewSet.as_view({'get': 'retrieve'}), name='circuit-show'),
+    path('circuits/<int:pk>/', CircuitViewSet.as_view({'put': 'update'}), name='circuit-update'),
+    path('upload_circuit_file/<int:pk>/', CircuitViewSet.as_view({'post': 'upload_file'}), name='circuit-upload-file'),
+    
 
     # Statements
     path('allAutopay', AutopayViewSet.as_view({'get': 'list'}), name='autopay-list-all'),

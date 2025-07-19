@@ -26,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AlertTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlertType
-        fields = ['alert_type_id', 'name']
+        fields = ['alert_type_id', 'description']
 
 class OutageSerializer(serializers.ModelSerializer):
     class Meta:
