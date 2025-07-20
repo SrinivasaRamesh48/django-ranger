@@ -71,7 +71,8 @@ class DispatchAppointmentTimeslotSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['ticket_id', 'opened_on', 'closed_on']
+        fields = '__all__'
+        read_only_fields = ['ticket_id', 'opened_on']
 
 class MacAddressSerializer(serializers.ModelSerializer):
     manufacturer = serializers.CharField(read_only=True)
@@ -198,7 +199,7 @@ class UsStateSerializer(serializers.ModelSerializer):
         model = UsState
         fields = ['us_state_id', 'name',]
 
-# --- Main Serializers ---
+
 class ProjectSerializer(serializers.ModelSerializer):
     us_state = UsStateSerializer(read_only=True)
     builder = BuilderSerializer(read_only=True)
