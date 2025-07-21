@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from app.models.node_frame import NodeFrame
-from app.serializers import NodeFrameSerializer
+from app.serializers.node_frame_serializer import NodeFrameSerializer
 class NodeFrameViewSet(viewsets.ReadOnlyModelViewSet):
     """
     A read-only ViewSet for retrieving Node Frames.

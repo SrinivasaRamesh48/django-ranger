@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from app.models.interest_form_log import InterestFormLog
-from app.serializers import InterestFormLogSerializer
+from app.serializers.interest_form_log_serializer import InterestFormLogSerializer
 
 class InterestFormLogViewSet(viewsets.ModelViewSet):
     """

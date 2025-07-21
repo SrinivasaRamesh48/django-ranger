@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from app.models import SubscriberAlert
-from app.serializers import SubscriberAlertSerializer
+from app.serializers.subscriber_alert_serializer import SubscriberAlertSerializer
 
 class SubscriberAlertViewSet(viewsets.ModelViewSet):
     """

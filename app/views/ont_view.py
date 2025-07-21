@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from app.models import Ont
-from app.serializers import OntSerializer
+from app.serializers.ont_serializer import OntSerializer
 
 class OntViewSet(viewsets.ReadOnlyModelViewSet):
     """

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from app.models.circuit_alert import CircuitAlert
-from app.serializers import CircuitAlertSerializer
+from app.serializers.circuit_alert_serializer import CircuitAlertSerializer
 
 class CircuitAlertViewSet(viewsets.ModelViewSet):
     """

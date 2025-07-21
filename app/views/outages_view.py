@@ -5,9 +5,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from app.serializers import BulkEmailTemplateSerializer
-from app.serializers import OutageSerializer
-from app.serializers import BulkPhoneTemplateSerializer
+from app.serializers.bulk_email_template_serializer import BulkEmailTemplateSerializer
+from app.serializers.outage_serializer import OutageSerializer
+from app.serializers.outage_homes_effected_serializer import OutageHomesEffectedSerializer
+from app.serializers.bulk_phone_template_serializer import BulkPhoneTemplateSerializer
 from app.models import (
     Outage, Project, Alert, Home, OutageHomesEffected,BulkEmailTemplate, BulkPhoneTemplate,
     BulkMessageType, EmailLogItem, SubscriberEmailLog, SMSLogItem, SubscriberSMSLog

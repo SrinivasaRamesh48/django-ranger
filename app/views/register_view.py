@@ -19,7 +19,8 @@ from django.utils import timezone
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from app.models import UserProjects, UserPermissions, Ticket, Alert
-from app.serializers import UserSerializer, PasswordResetSerializer
+from app.serializers.user_serializer import UserSerializer
+from app.serializers.password_reset_serializer import PasswordResetTokenSerializer
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
@@ -172,7 +173,7 @@ class ResetMyPasswordView(APIView):
 
     def post(self, request):
         user = request.user
-        serializer = PasswordResetSerializer(data=request.data)
+        serializer = PasswordResetTokenSerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response({

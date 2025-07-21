@@ -4,9 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from app.models import Project, Uploads
-from app.serializers import (
- NodeSerializer,ProjectSerializer
-)
+from app.serializers.project_serializer import ProjectSerializer
+from app.serializers.node_serializer import NodeSerializer
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

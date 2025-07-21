@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from app.serializers import UsStateSerializer
+from app.serializers.us_state_serializer import UsStateSerializer
 from app.models import UsState
 # from .models import UsState
 # from .serializers import UsStateSerializer

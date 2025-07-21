@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import ProjectAlert
-from app.serializers import ProjectAlertSerializer
+from app.serializers.project_alert_serializer import ProjectAlertSerializer
 
 class ProjectAlertViewSet(viewsets.ModelViewSet):
     """

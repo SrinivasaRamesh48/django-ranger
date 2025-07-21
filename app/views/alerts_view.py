@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from app.models.alert import Alert
-from app.serializers import AlertSerializer
+from app.serializers.alert_serializer import AlertSerializer
 
 class AlertViewSet(viewsets.ModelViewSet):
     """

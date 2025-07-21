@@ -5,6 +5,7 @@ from app.models.user_roles import UserRoles
 from app.models.user_company import UserCompany
 from app.models.user_permissions import UserPermissions
 from app.models.user_permission_type import UserPermissionType
+from app.models.subscriber import Subscriber
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -39,4 +40,31 @@ class UserPermissionTypeAdmin(admin.ModelAdmin):
     list_display = ('user_permission_type_id', 'identifier', 'description', 'user_permission_category', 'user_permission_subcategory')
     search_fields = ('identifier', 'description')
     list_filter = ('user_permission_category', 'user_permission_subcategory')
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('subscriber_id', 'username', 'first_name', 'last_name', 'primary_email', 'primary_phone', 'service_activated_on', 'suspended')
+    search_fields = ('username', 'first_name', 'last_name', 'primary_email', 'primary_phone')
+    list_filter = ('suspended', 'multi_home_subscriber', 'pause_billing', 'service_activated_on')
+    readonly_fields = ('subscriber_id', 'password')  # Make ID and password read-only for security
+    ordering = ('-subscriber_id',)
+    
+    fieldsets = (
+        ('Personal Information', {
+            'fields': ('subscriber_id', 'first_name', 'last_name', 'primary_email', 'username', 'password')
+        }),
+        ('Contact Information', {
+            'fields': ('primary_phone',)
+        }),
+        ('Service Information', {
+            'fields': ('home', 'service_plan', 'node', 'node_port_number', 'service_activated_on', 'service_deactivated_on', 'suspended')
+        }),
+        ('Billing Information', {
+            'fields': ('merchant_customer_id', 'autopay_merchant_id', 'acp_application_id', 'qbo_customer_id', 'pause_billing')
+        }),
+        ('Multi-Home Settings', {
+            'fields': ('multi_home_subscriber',)
+        }),
+    )
 

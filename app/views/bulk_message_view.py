@@ -8,9 +8,10 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from app.models import Home
 from app.models import Subscriber, EmailLogItem, SubscriberEmailLog, SMSLogItem, SubscriberSMSLog,BulkEmailTemplate, BulkPhoneTemplate
-from app.serializers import BulkEmailTemplateSerializer, BulkPhoneTemplateSerializer
+from app.serializers.bulk_email_template_serializer import BulkEmailTemplateSerializer
+from app.serializers.bulk_phone_template_serializer import BulkPhoneTemplateSerializer
 from app.jobs.send_bulk_email import send_bulk_email_job  
-from app.serializers import SubscriberEmailLogSerializer, SubscriberSMSLogSerializer,BulkMessageTypeSerializer
+from app.serializers.bulk_message_type_serializer import BulkMessageTypeSerializer
 # from .twilio_client import send_bulk_sms
 class BulkMessageView(APIView):
     def get_checkbox_nodes(self, label_key):

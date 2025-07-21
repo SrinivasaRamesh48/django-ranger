@@ -4,8 +4,13 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from django.db.models import Q
-from app.models import Ticket, TicketEntry, TicketEntryAction, User, TicketStatus
-from app.serializers import TicketSerializer, TicketEntrySerializer
+from app.models import Ticket, TicketEntry, TicketEntryAction, TicketEntryActionType, User, TicketStatus
+from app.models import Subscriber
+import random
+from django.utils import timezone
+from django.contrib.auth.hashers import make_password
+from app.serializers.ticket_serializer import TicketSerializer
+from app.serializers.ticket_entry_serializer import TicketEntrySerializer
 # from app.mail.ticket_closed_email import send_ticket_closed_email
 # from app.mail.ticket_entry_email import send_ticket_entry_email
 
@@ -27,15 +32,153 @@ class TicketViewSet(viewsets.ViewSet):
         return Response({'success': True, 'data': serializer.data, 'message': 'Ticket retrieved'})
 
     def create(self, request):
-        print("Creating ticket with data:", request.data)
-        serializer = TicketSerializer(data=request.data)
-        print("Creating ticket...")
-        if serializer.is_valid():
-            ticket = serializer.save()
-            print(f"Ticket created: {ticket.ticket_id}")
-            return Response({'success': True, 'data': serializer.data, 'message': 'Ticket created'})
-        print(f"Ticket creation failed: {serializer.errors}")
-        return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        user = request.user
+        input_data = request.data
+        
+        subscriber = None
+        if input_data.get('new_subscriber') == True:
+            # Check if email already exists
+            if Subscriber.objects.filter(primary_email=input_data.get('email')).exists():
+                response = {
+                    'success': False,
+                    'data': None,
+                    'message': 'Failed to Create Subscriber.'
+                }
+                return Response(response, status=status.HTTP_200_OK)
+            
+            pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            random_password = ''.join(random.choices(pool, k=16))
+            try:
+                print(f"Creating subscriber with email: {input_data.get('email')}")
+                subscriber = Subscriber.objects.create(
+                    first_name=input_data.get('first_name'),
+                    last_name=input_data.get('last_name'),
+                    primary_email=input_data.get('email'),
+                    primary_phone=input_data.get('phone'),
+                    password=make_password(random_password)
+                )
+            except Exception as e:
+                print(f"Error creating subscriber: {e}")
+                subscriber = None
+            
+            if not subscriber:
+                response = {
+                    'success': False,
+                    'data': None,
+                    'message': 'Failed to Create Subscriber.'
+                }
+                return Response(response, status=status.HTTP_200_OK)
+        
+        # Create ticket if subscriber_id exists or subscriber was created
+        if input_data.get('subscriber_id') or subscriber:
+            # If using existing subscriber_id, validate it exists
+            if input_data.get('subscriber_id') and not subscriber:
+                try:
+                    existing_subscriber = Subscriber.objects.get(subscriber_id=input_data.get('subscriber_id'))
+                except Subscriber.DoesNotExist:
+                    response = {
+                        'success': False,
+                        'data': None,
+                        'message': 'Failed to Create Ticket.'
+                    }
+                    return Response(response, status=status.HTTP_200_OK)
+            
+            try:
+                # Get the "Open" ticket status (default for new tickets)
+                open_status = TicketStatus.objects.filter(description='Open').first()
+                if not open_status:
+                    # If no "Open" status exists, try to get the first available status
+                    open_status = TicketStatus.objects.first()
+                
+                if not open_status:
+                    ticket = None
+                else:
+                    ticket = Ticket.objects.create(
+                        subscriber_id=input_data.get('subscriber_id') if input_data.get('subscriber_id') else subscriber.subscriber_id,
+                        user_id=user.user_id,
+                        ticket_status=open_status
+                    )
+            except Exception as e:
+                ticket = None
+            
+            if ticket:
+                try:
+                    entry = TicketEntry.objects.create(
+                        ticket_id=ticket.ticket_id,
+                        user_id=user.user_id,
+                        start_time=timezone.now(),
+                        description=input_data.get('description', '')
+                    )
+                except Exception as e:
+                    entry = None
+                
+                if entry:
+                    try:
+                        # Get the first action type (usually 'Note' or similar)
+                        action_type = TicketEntryActionType.objects.first()
+                        
+                        action = TicketEntryAction.objects.create(
+                            ticket_entry_id=entry.ticket_entry_id,
+                            type=action_type
+                        )
+                    except Exception as e:
+                        action = None
+                    
+                    if action:
+                        try:
+                            ticket = Ticket.objects.select_related(
+                                'ticket_category', 'ticket_status', 'user',
+                                'subscriber__service_plan', 'subscriber__home__project',
+                                'subscriber__home__mac_address', 'subscriber__home__node',
+                                'subscriber__home__us_state'
+                            ).prefetch_related(
+                                'entries',
+                                'entries__dispatch_appointment__type',
+                                'entries__dispatch_appointment__technician',
+                                'entries__dispatch_appointment__timeslot',
+                                'entries__dispatch_appointment__created_by',
+                                'entries__dispatch_appointment__canceled_by',
+                                'entries__actions__type',
+                                'entries__service_change_schedule'
+                            ).order_by('-ticket_status_id', '-opened_on').get(ticket_id=ticket.ticket_id)
+
+                            serializer = TicketSerializer(ticket)
+                            return Response({
+                                'success': True,
+                                'data': serializer.data,
+                                'message': 'Ticket Successfully Created.'
+                            }, status=status.HTTP_200_OK)
+                        except Ticket.DoesNotExist:
+                            return Response({
+                                'success': False,
+                                'message': 'Ticket not found.'
+                            }, status=status.HTTP_404_NOT_FOUND)
+                    else:
+                        response = {
+                            'success': False,
+                            'data': None,
+                            'message': 'Failed to Create Ticket.'
+                        }
+                else:
+                    response = {
+                        'success': False,
+                        'data': None,
+                        'message': 'Failed to Create Ticket.'
+                    }
+            else:
+                response = {
+                    'success': False,
+                    'data': None,
+                    'message': 'Failed to Create Ticket.'
+                }
+        else:
+            response = {
+                'success': False,
+                'data': None,
+                'message': 'Failed to Create Ticket.'
+            }
+        
+        return Response(response, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def update_ticket(self, request):
@@ -155,6 +298,7 @@ class TicketViewSet(viewsets.ViewSet):
     def tickets_chart_data(self, request, filter=None, timeframe=None):
         from datetime import timedelta
         from django.utils.timezone import now
+
 
         tf = int(timeframe)
         delta = timedelta(days=tf)

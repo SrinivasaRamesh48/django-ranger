@@ -7,10 +7,8 @@ from django.core.mail import send_mail  # or your custom mailer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
 from app.models import User, UserPermissionType, UserPermissions
-from app.serializers import (
-    UserSerializer,
-    UserPermissionTypeSerializer
-)
+from app.serializers.user_serializer import UserSerializer
+from app.serializers.user_permission_type_serializer import UserPermissionTypeSerializer
 import random
 import string
 

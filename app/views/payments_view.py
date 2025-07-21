@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from app import models
 from app.models import Payment
-from app.serializers import PaymentSerializer 
+from app.serializers.payment_serializer import PaymentSerializer
 
 
 class PaymentViewSet(viewsets.ReadOnlyModelViewSet):

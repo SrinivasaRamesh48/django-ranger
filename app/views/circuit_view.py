@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from app.models import Circuit
-from app.serializers import CircuitSerializer,UploadSerializer
+from app.serializers.circuit_serializer import CircuitSerializer
+from app.serializers.upload_serializer import UploadSerializer
 
 class CircuitViewSet(viewsets.ModelViewSet):
     queryset = Circuit.objects.all()

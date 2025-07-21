@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from app.serializers import UserCompanySerializer
+from app.serializers.user_company_serializer import UserCompanySerializer
 from app.models import UserCompany
 # from .models import UserCompany
 # from .serializers import UserCompanySerializer

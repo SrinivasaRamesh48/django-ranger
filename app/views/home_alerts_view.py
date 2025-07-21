@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from app.models.home_alert import HomeAlert
-from app.serializers import HomeAlertSerializer
+from app.serializers.home_alert_serializer import HomeAlertSerializer
+
 
 class HomeAlertViewSet(viewsets.ModelViewSet):
     """

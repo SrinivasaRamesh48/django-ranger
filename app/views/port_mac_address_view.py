@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from app.models import PortMacAddress
-from app.serializers import PortMacAddressSerializer
+from app.serializers.port_mac_address_serializer import PortMacAddressSerializer
 
 
 class PortMacAddressViewSet(viewsets.ReadOnlyModelViewSet):
