@@ -20,7 +20,7 @@ class ServiceChangeSchedule(TimeStampedModelMixin, models.Model):
     service_change_schedule_type = models.ForeignKey(ServiceChangeScheduleType, on_delete=models.PROTECT, db_column='service_change_schedule_type_id')
     subscriber = models.ForeignKey(Subscriber, on_delete=models.CASCADE, db_column='subscriber_id')
     service_plan = models.ForeignKey(ServicePlan, on_delete=models.PROTECT, db_column='service_plan_id')
-    ticket_entry = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True, blank=True, db_column='ticket_entry_id')
+    ticket_entry = models.OneToOneField('TicketEntry', on_delete=models.CASCADE, db_column='ticket_entry_id', related_name='service_change_schedule')
     leasing_staff_red = models.ForeignKey(LeasingStaffRed, on_delete=models.SET_NULL, null=True, blank=True, db_column='leasing_staff_red_id')
     
     

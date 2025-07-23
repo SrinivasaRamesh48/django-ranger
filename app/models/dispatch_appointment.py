@@ -21,7 +21,7 @@ class DispatchAppointment(models.Model):
     appointment_type = models.ForeignKey(DispatchAppointmentType, on_delete=models.CASCADE, db_column='dispatch_appointment_type_id')
     technician = models.ForeignKey(User, related_name='dispatches', on_delete=models.CASCADE, db_column='user_id')
     timeslot = models.ForeignKey(DispatchAppointmentTimeslot, on_delete=models.CASCADE, db_column='dispatch_appointment_timeslot_id')
-    ticket = models.ForeignKey(Ticket, on_delete=models.SET_NULL, blank=True, null=True, db_column='ticket_id')
+    ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE, db_column='ticket_id', related_name='dispatch_appointments')
     created_by = models.ForeignKey(User, related_name='created_appointments', on_delete=models.CASCADE, db_column='created_by_id')
     canceled_by = models.ForeignKey(User, related_name='canceled_appointments', on_delete=models.SET_NULL, blank=True, null=True, db_column='canceled_by')
 

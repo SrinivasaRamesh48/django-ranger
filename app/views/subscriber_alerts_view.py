@@ -7,20 +7,12 @@ from app.models import SubscriberAlert
 from app.serializers.subscriber_alert_serializer import SubscriberAlertSerializer
 
 class SubscriberAlertViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for creating and updating Subscriber Alerts.
-    - POST /subscriber_alerts -> create()
-    - PUT /subscriber_alerts/{id}/ -> update()
-    """
     queryset = SubscriberAlert.objects.all()
     serializer_class = SubscriberAlertSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'subscriber_alert_id' # Use subscriber_alert_id in the URL
+    lookup_field = 'subscriber_alert_id' 
 
     def perform_create(self, serializer):
-        """
-        Custom logic for creating a new alert. Replaces the `store` method.
-        """
         user = self.request.user
         is_active = serializer.validated_data.get('active', False)
         

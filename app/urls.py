@@ -1,8 +1,7 @@
 from django.urls import path
 
-from app import views
 from app.views.register_view import LogoutView,RegisterView,LoginView,FakeGetActiveTicketView,AuthenticateView,ResetMyPasswordView
-from app.views.subscriber_view import SubscriberListView
+from app.views.subscriber_view import CheckOpenTicketsView, SubscriberListView
 from app.views.acp_view import SubscriberACPViewSet
 from app.views.alerts_view import AlertViewSet
 from app.views.alert_types_view import AlertTypesViewSet
@@ -39,6 +38,7 @@ router.register(r'allTickets', TicketViewSet, basename='tickets')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('check_open_tickets/<int:id>/', CheckOpenTicketsView.as_view(), name='check_open_tickets'),
     path('allSubscribers', SubscriberListView.as_view(), name='subscriber-list'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),

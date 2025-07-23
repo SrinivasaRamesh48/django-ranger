@@ -10,23 +10,14 @@ from app.models import Home
 from app.models import Subscriber, EmailLogItem, SubscriberEmailLog, SMSLogItem, SubscriberSMSLog,BulkEmailTemplate, BulkPhoneTemplate
 from app.serializers.bulk_email_template_serializer import BulkEmailTemplateSerializer
 from app.serializers.bulk_phone_template_serializer import BulkPhoneTemplateSerializer
-from app.jobs.send_bulk_email import send_bulk_email_job  
 from app.serializers.bulk_message_type_serializer import BulkMessageTypeSerializer
+
+from app.jobs.send_bulk_email import send_bulk_email_job 
 # from .twilio_client import send_bulk_sms
 class BulkMessageView(APIView):
     def get_checkbox_nodes(self, label_key):
-        """
-        Builds the nested dictionary structure for the checkbox tree.
-
-        Args:
-            label_key (str): The attribute name on the ActiveSubscriber model
-                             to use for the contact info (e.g., 'primary_email').
-        """
         checkbox_nodes = {}
         all_ids = []
-
-        # 1. Optimized Query: Fetch all necessary data in a single, efficient query.
-        #    - We'll get all homes and filter for active subscribers in Python
         homes_queryset = Home.objects.select_related(
             'project__circuit',
             'node'

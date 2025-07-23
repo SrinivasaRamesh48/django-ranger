@@ -2,7 +2,6 @@ from django.db import models
 from app.models.time_stamped_model_mixin import TimeStampedModelMixin
 
 class Payment(TimeStampedModelMixin, models.Model):
-    """Django equivalent of the Laravel Payment model."""
     payment_id = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     merchant_id = models.CharField(max_length=255, blank=True, null=True)

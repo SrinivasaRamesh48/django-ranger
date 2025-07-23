@@ -11,5 +11,5 @@ class BulkPhoneTemplateSerializer(serializers.ModelSerializer):
         model = BulkPhoneTemplate
         fields = [
             'bulk_phone_template_id', 'description', 'body',
-            'message_type', 'bulk_message_type_id', 'created_at', 'updated_at'
+            'message_type', 'bulk_message_type_id', 'active', 'created_at', 'updated_at'
         ]

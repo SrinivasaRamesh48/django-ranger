@@ -22,7 +22,6 @@ class Project(models.Model):
     subscription_type = models.ForeignKey("SubscriptionType", on_delete=models.PROTECT, db_column='subscription_type_id')
     service_plan = models.ForeignKey("ServicePlan", on_delete=models.SET_NULL, null=True, blank=True, db_column='bulk_service_plan_id')
     circuit = models.ForeignKey("Circuit", on_delete=models.SET_NULL, null=True, blank=True, db_column='circuit_id')
-    # network_type is not defined in the Laravel model as a direct FK
 
     class Meta:
         db_table = "projects"

@@ -4,11 +4,11 @@ from .time_stamped_model_mixin import TimeStampedModelMixin
 class Subscriber(TimeStampedModelMixin, models.Model):
     subscriber_id = models.AutoField(primary_key=True)
 
-    home = models.ForeignKey('Home', on_delete=models.SET_NULL, null=True, db_column='home_id')
+    home = models.ForeignKey('Home', on_delete=models.SET_NULL, null=True, db_column='home_id', related_name='subscribers')
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     primary_email = models.EmailField()
-    username = models.CharField(max_length=150, unique=True)
+    username = models.CharField(max_length=150,)
     password = models.CharField(max_length=255)  # You will hash this in the view using make_password()
 
     primary_phone = models.CharField(max_length=20,null=True)

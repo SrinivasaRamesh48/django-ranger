@@ -34,11 +34,12 @@ class TicketViewSet(viewsets.ViewSet):
     def create(self, request):
         user = request.user
         input_data = request.data
-        
+        print(f"Input data: {input_data}")
         subscriber = None
         if input_data.get('new_subscriber') == True:
             # Check if email already exists
             if Subscriber.objects.filter(primary_email=input_data.get('email')).exists():
+                
                 response = {
                     'success': False,
                     'data': None,
@@ -75,6 +76,7 @@ class TicketViewSet(viewsets.ViewSet):
             if input_data.get('subscriber_id') and not subscriber:
                 try:
                     existing_subscriber = Subscriber.objects.get(subscriber_id=input_data.get('subscriber_id'))
+                    print(f"Using existing subscriber: {existing_subscriber.subscriber_id}")
                 except Subscriber.DoesNotExist:
                     response = {
                         'success': False,
@@ -98,7 +100,9 @@ class TicketViewSet(viewsets.ViewSet):
                         user_id=user.user_id,
                         ticket_status=open_status
                     )
+                    print(f"Ticket created with ID: {ticket.ticket_id}")
             except Exception as e:
+                print(f"Error creating ticket: {e}")
                 ticket = None
             
             if ticket:
@@ -110,6 +114,7 @@ class TicketViewSet(viewsets.ViewSet):
                         description=input_data.get('description', '')
                     )
                 except Exception as e:
+                    print(f"Error creating ticket entry: {e}")
                     entry = None
                 
                 if entry:
@@ -122,6 +127,7 @@ class TicketViewSet(viewsets.ViewSet):
                             type=action_type
                         )
                     except Exception as e:
+                        print(f"Error creating ticket entry action: {e}")
                         action = None
                     
                     if action:

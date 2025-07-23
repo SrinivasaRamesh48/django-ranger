@@ -5,4 +5,4 @@ from app.models import OntManufacturer
 class OntManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = OntManufacturer
-        fields = ['ont_manufacturer_id']
+        fields = ['ont_manufacturer_id', 'description', 'created_at', 'updated_at']

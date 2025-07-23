@@ -7,7 +7,7 @@ class TicketEntryAction(TimeStampedModelMixin, models.Model):
     
     # Relationships
     ticket_entry = models.ForeignKey('TicketEntry', on_delete=models.CASCADE, related_name='actions', db_column='ticket_entry_id')
-    type = models.ForeignKey(TicketEntryActionType, on_delete=models.CASCADE, db_column='ticket_entry_action_type_id')
+    type = models.ForeignKey(TicketEntryActionType, on_delete=models.CASCADE, db_column='ticket_entry_action_type_id',null=True, blank=True)
 
     class Meta:
         db_table = 'ticket_entry_action'

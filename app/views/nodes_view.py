@@ -15,10 +15,6 @@ class NodeViewSet(viewsets.ModelViewSet):
     lookup_field = 'node_id'
 
     def get_queryset(self):
-        """
-        Eager loads related data to improve performance, equivalent to `with()`
-        in Laravel.
-        """
         return Node.objects.select_related(
             'node_frame', 'node_type', 'node_class', 'project'
         ).prefetch_related('homes', 'homes__subscribers')

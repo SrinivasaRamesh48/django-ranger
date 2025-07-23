@@ -5,4 +5,4 @@ from app.models import ProjectNetworkType
 class ProjectNetworkTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectNetworkType
-        fields = ["__all__"]
+        fields = '__all__'

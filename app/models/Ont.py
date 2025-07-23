@@ -1,8 +1,10 @@
 from django.db import models
-from .node import Node             
-from .ont_manufacturer import OntManufacturer 
+from app.models.node import Node             
+from app.models.ont_manufacturer import OntManufacturer 
+from app.models.time_stamped_model_mixin import TimeStampedModelMixin
 
-class Ont(models.Model):
+
+class Ont(TimeStampedModelMixin, models.Model):
 
     ont_id = models.AutoField(primary_key=True)
     fsan = models.CharField(max_length=255)
@@ -18,12 +20,9 @@ class Ont(models.Model):
     last_pulled = models.DateTimeField(null=True, blank=True)
 
     # Relationships
-    home = models.OneToOneField('Home', on_delete=models.CASCADE, db_column='home_id')
-    node = models.ForeignKey('Node', on_delete=models.PROTECT, db_column='node_id')
-    manufacturer = models.ForeignKey('OntManufacturer', on_delete=models.PROTECT, db_column='ont_manufacturer_id')
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    home = models.ForeignKey('Home', on_delete=models.CASCADE, db_column='home_id',related_name='onts')
+    node = models.ForeignKey('Node', on_delete=models.PROTECT, db_column='node_id',related_name='onts')
+    manufacturer = models.ForeignKey('OntManufacturer', on_delete=models.PROTECT, db_column='ont_manufacturer_id',related_name='onts')
 
     class Meta:
         db_table = 'ont'

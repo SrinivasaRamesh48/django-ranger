@@ -13,14 +13,10 @@ class TicketEntry(TimeStampedModelMixin, models.Model):
     submitted = models.IntegerField(default=0)
     ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE, related_name='entries', db_column='ticket_id')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id')
-
+    dispatch_appointment = models.OneToOneField('DispatchAppointment',on_delete=models.SET_NULL,null=True,blank=True,db_column='dispatch_appointment_id',related_name='ticket_entry',)
     class Meta:
         db_table = 'ticket_entry'
         ordering = ['-created_at']
-
-    @property
-    def dispatch_appointment(self):
-        return self.ticket.dispatchappointment_set.order_by('-dispatch_appointment_id').first()
 
     @property
     def service_change_schedule(self):

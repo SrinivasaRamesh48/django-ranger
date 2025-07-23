@@ -22,6 +22,9 @@ class MacAddress(TimeStampedModelMixin, models.Model):
     manual_registration = models.BooleanField(default=False)
     default_ssid = models.CharField(max_length=255, blank=True, null=True)
     default_passkey = models.CharField(max_length=255, blank=True, null=True)
+    home = models.ForeignKey(
+        "Home", on_delete=models.CASCADE, db_column='home_id', related_name='mac_addresses', blank=True, null=True
+    )
 
     class Meta:
         db_table = "mac_address"

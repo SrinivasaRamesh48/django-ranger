@@ -16,5 +16,5 @@ class InterestFormLogSerializer(serializers.ModelSerializer):
             'interest_form_log_id', 'name', 'address', 'city', 'zip_code', 'email', 'phone',
             'message', 'notes', 'ip_address', 'created_at', 'updated_at',
             'state', 'updated_by',
-            'state_id', 'updated_by_id'
+            'state_id', 'updated_by_id', 'created_at', 'updated_at'
         ]

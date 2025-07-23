@@ -6,11 +6,6 @@ from app.serializers.port_mac_address_serializer import PortMacAddressSerializer
 
 
 class PortMacAddressViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A read-only ViewSet for viewing Port MAC Addresses.
-    Corresponds to `PortMacAddressController@index`.
-    """
-    # Eager load related data for efficiency. The `__` traverses relationships.
     queryset = PortMacAddress.objects.select_related(
         'node', 'mac_address_found', 'mac_address_found__home'
     ).all()
@@ -19,9 +14,6 @@ class PortMacAddressViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        """
-        Overrides the default list action to provide a custom response format.
-        """
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         data = serializer.data

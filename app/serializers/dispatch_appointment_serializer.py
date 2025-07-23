@@ -18,6 +18,9 @@ class DispatchAppointmentSerializer(serializers.ModelSerializer):
     ticket_id = serializers.PrimaryKeyRelatedField(queryset=Ticket.objects.all(), source='ticket', write_only=True, required=False, allow_null=True)
     created_by_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='created_by', write_only=True)
     canceled_by_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='canceled_by', write_only=True, required=False, allow_null=True)
+    
+    
+    
     class Meta:
         model = DispatchAppointment
-        fields = '__all__   '
+        fields = ['dispatch_appointment_id', 'date', 'appointment_type', 'technician', 'timeslot', 'ticket', 'created_by', 'canceled_by', 'dispatch_appointment_type_id', 'user_id', 'dispatch_appointment_timeslot_id', 'ticket_id', 'created_by_id', 'canceled_by_id']

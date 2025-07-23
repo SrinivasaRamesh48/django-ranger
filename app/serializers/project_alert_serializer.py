@@ -20,4 +20,20 @@ class ProjectAlertSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ProjectAlert
-        fields = '__all__'
+        fields = [
+            'project_alert_id',
+            'message',
+            'active',
+            'created_at',
+            'updated_at',
+            'alert_type',
+            'project',
+            'activated_by',
+            'deactivated_by',
+            'updated_by',
+            'alert_type_id',
+            'project_id',
+            'activated_by_id',
+            'deactivated_by_id',
+            'updated_by_id'
+        ]

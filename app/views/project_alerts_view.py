@@ -6,15 +6,10 @@ from app.models import ProjectAlert
 from app.serializers.project_alert_serializer import ProjectAlertSerializer
 
 class ProjectAlertViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for creating and updating Project Alerts.
-    - POST /project_alerts -> create()
-    - PUT /project_alerts/{id}/ -> update()
-    """
     queryset = ProjectAlert.objects.all()
     serializer_class = ProjectAlertSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'project_alert_id' # Use project_alert_id in the URL
+    lookup_field = 'project_alert_id' 
 
     def perform_create(self, serializer):
         """

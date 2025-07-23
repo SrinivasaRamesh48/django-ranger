@@ -21,8 +21,17 @@ class TicketSerializer(serializers.ModelSerializer):
         return TicketEntrySerializer(obj.entries.all(), many=True).data
         
     def get_subscriber(self, obj):
-        from app.serializers.subscriber_serializer import SubscriberSerializer
-        return SubscriberSerializer(obj.subscriber).data if obj.subscriber else None
+        # Use a simple representation to avoid circular reference with SubscriberSerializer
+        if obj.subscriber:
+            return {
+                'subscriber_id': obj.subscriber.subscriber_id,
+                'first_name': obj.subscriber.first_name,
+                'last_name': obj.subscriber.last_name,
+                'primary_email': obj.subscriber.primary_email,
+                'primary_phone': obj.subscriber.primary_phone,
+                'username': obj.subscriber.username,
+            }
+        return None
 
     def get_minimize(self, obj):
         return False

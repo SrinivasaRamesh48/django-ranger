@@ -6,7 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from app.models import Project, Uploads
 from app.serializers.project_serializer import ProjectSerializer
 from app.serializers.node_serializer import NodeSerializer
-
+from app.serializers.upload_serializer import UploadSerializer
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """
@@ -24,7 +24,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """Eager load common relationships to improve performance."""
         return Project.objects.select_related(
             'us_state', 'builder', 'subscription_type', 'network_type', 'circuit'
-        ).prefetch_related('homes', 'nodes', 'alerts')
+        ).prefetch_related('homes', 'nodes')
 
     def list(self, request, *args, **kwargs):
         """Corresponds to the `index` method."""
@@ -101,7 +101,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             path=file_obj
         )
         
-        serializer = FileUploadSerializer(upload)
+        serializer = UploadSerializer(upload)
         return Response({
             'success': True, 'data': serializer.data, 'message': 'File Successfully Uploaded.'
         }, status=status.HTTP_201_CREATED)

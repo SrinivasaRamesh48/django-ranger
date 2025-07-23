@@ -19,6 +19,7 @@ class BulkEmailTemplate(TimeStampedModelMixin,models.Model):
 
     class Meta:
         db_table = "bulk_email_templates"
+        app_label = "app"
 
     def __str__(self):
         return self.subject

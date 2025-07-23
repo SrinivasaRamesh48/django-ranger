@@ -6,6 +6,8 @@ from app.models.user_company import UserCompany
 from app.models.user_permissions import UserPermissions
 from app.models.user_permission_type import UserPermissionType
 from app.models.subscriber import Subscriber
+from app.models.ticket_status import TicketStatus
+from app.models.ticket_category import TicketCategory
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -67,4 +69,19 @@ class SubscriberAdmin(admin.ModelAdmin):
             'fields': ('multi_home_subscriber',)
         }),
     )
+
+
+@admin.register(TicketStatus)
+class TicketStatusAdmin(admin.ModelAdmin):
+    list_display = ('ticket_status_id', 'description')
+    search_fields = ('description',)
+    ordering = ('ticket_status_id',)
+
+
+@admin.register(TicketCategory)
+class TicketCategoryAdmin(admin.ModelAdmin):
+    list_display = ('ticket_category_id', 'description', 'account_portal_visible')
+    search_fields = ('description',)
+    list_filter = ('account_portal_visible',)
+    ordering = ('ticket_category_id',)
 

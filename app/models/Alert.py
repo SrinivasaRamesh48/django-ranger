@@ -1,7 +1,6 @@
 from django.db import models
 from .alert_type import AlertType   
 from .user import User  
-from .outage import Outage  
 
 class Alert(models.Model):
     alert_id = models.AutoField(primary_key=True)
@@ -35,7 +34,7 @@ class Alert(models.Model):
     )
 
     outage = models.ForeignKey(
-        Outage,
+        'Outage',
         on_delete=models.SET_NULL,
         null=True, blank=True,
         db_column='outage_id'

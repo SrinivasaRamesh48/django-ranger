@@ -9,6 +9,8 @@ class AlertSerializer(serializers.ModelSerializer):
     activated_by = UserSerializer(read_only=True)
     deactivated_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
+    
+    
     alert_type_id = serializers.PrimaryKeyRelatedField(queryset=AlertType.objects.all(), source='alert_type', write_only=True)
     activated_by_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='activated_by', write_only=True, required=False, allow_null=True)
     deactivated_by_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='deactivated_by', write_only=True, required=False, allow_null=True)

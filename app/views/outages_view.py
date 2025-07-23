@@ -13,14 +13,9 @@ from app.models import (
     Outage, Project, Alert, Home, OutageHomesEffected,BulkEmailTemplate, BulkPhoneTemplate,
     BulkMessageType, EmailLogItem, SubscriberEmailLog, SMSLogItem, SubscriberSMSLog
 )
-# --- Assumed Task & Email Imports ---
-# These assume you have files for these classes/functions.
-# from .tasks import send_bulk_email_task
-# from .emails import PotentialOutageDetected
 
-# --- Placeholder for external service/job logic ---
+
 def send_potential_outage_email(email_data):
-    # This would use your PotentialOutageDetected Mailable equivalent
     print("Sending potential outage email:", email_data)
     return True
 

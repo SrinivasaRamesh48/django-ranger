@@ -5,4 +5,4 @@ from app.models import BulkMessageType
 class BulkMessageTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = BulkMessageType
-        fields = ['bulk_message_type_id', 'name']
+        fields = ['bulk_message_type_id', 'description']

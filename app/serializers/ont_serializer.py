@@ -22,15 +22,3 @@ class OntSerializer(serializers.ModelSerializer):
             'node', 'node_id',
             'manufacturer', 'ont_manufacturer_id'
         ]        
-
-    def get_home(self, obj):
-        from app.serializers.home_serializer import HomeSerializer
-        return HomeSerializer(obj.home).data if obj.home else None
-        
-    def get_node(self, obj):
-        from app.serializers.node_serializer import NodeSerializer
-        return NodeSerializer(obj.node).data if obj.node else None
-        
-    def get_manufacturer(self, obj):
-        from app.serializers.ont_manufacturer_serializer import OntManufacturerSerializer
-        return OntManufacturerSerializer(obj.manufacturer).data if obj.manufacturer else None

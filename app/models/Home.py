@@ -1,11 +1,11 @@
 from django.db import models
-from .mesh_cpe_install import MeshCPEInstall
-from .ont import Ont
-from .multi_home_subscriber_home import MultiHomeSubscriberHome
-from .subscriber import Subscriber
-from .uploads import Uploads
-from .home_alert import HomeAlert
-from .port_mac_address import PortMacAddress
+from app.models.mesh_cpe_install import MeshCPEInstall
+from app.models.ont import Ont
+from app.models.multi_home_subscriber_home import MultiHomeSubscriberHome
+from app.models.subscriber import Subscriber
+from app.models.uploads import Uploads
+from app.models.home_alert import HomeAlert
+from app.models.port_mac_address import PortMacAddress
 class Home(models.Model):
     home_id = models.AutoField(primary_key=True)
 
@@ -16,7 +16,7 @@ class Home(models.Model):
     zip_code = models.CharField(max_length=20)
     unit = models.CharField(max_length=50, null=True, blank=True)
     subsciber = models.CharField(max_length=255, null=True, blank=True)  # Spelling is preserved from source
-    mac_address = models.OneToOneField('MacAddress', on_delete=models.SET_NULL, null=True,related_name="home", db_column='mac_address_id')
+    mac_address = models.OneToOneField('MacAddress', on_delete=models.SET_NULL, null=True, related_name="primary_home", db_column='mac_address_id')
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     node = models.OneToOneField('Node', on_delete=models.SET_NULL, null=True, db_column='node_id')
     node_switch_unit = models.CharField(max_length=50)
