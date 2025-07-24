@@ -37,7 +37,8 @@ class Alert(models.Model):
         'Outage',
         on_delete=models.SET_NULL,
         null=True, blank=True,
-        db_column='outage_id'
+        db_column='outage_id',
+        related_name='alert'
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

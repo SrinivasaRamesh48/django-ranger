@@ -8,20 +8,12 @@ from app.serializers.home_alert_serializer import HomeAlertSerializer
 
 
 class HomeAlertViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for creating and updating Home Alerts.
-    - POST /home_alerts -> create()
-    - PUT /home_alerts/{id}/ -> update()
-    """
     queryset = HomeAlert.objects.all()
     serializer_class = HomeAlertSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'home_alert_id' # Use home_alert_id in the URL
+    lookup_field = 'home_alert_id'
 
     def perform_create(self, serializer):
-        """
-        Custom logic for creating a new alert. Replaces the `store` method.
-        """
         user = self.request.user
         is_active = serializer.validated_data.get('active', False)
         
@@ -32,9 +24,6 @@ class HomeAlertViewSet(viewsets.ModelViewSet):
         )
 
     def perform_update(self, serializer):
-        """
-        Custom logic for updating an existing alert. Replaces the `update` method.
-        """
         user = self.request.user
         instance = serializer.instance
         is_active = serializer.validated_data.get('active', instance.active)

@@ -24,7 +24,7 @@ def send_bulk_sms_task(body, recipients):
     """
     A Celery task to send bulk SMS messages in the background.
     """
-    print(f"Sending SMS via Celery: '{body}' to {len(recipients)} recipients.")
+    print(f"Sending SMS via Celery: '{body}' to {len(recipients)} recipients.") 
     # In a real implementation, you would use the Twilio client here.
     # from twilio.rest import Client
     # client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
@@ -34,9 +34,6 @@ def send_bulk_sms_task(body, recipients):
 
 
 class OutageViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for managing Outages. Corresponds to OutagesController.
-    """
     queryset = Outage.objects.all()
     serializer_class = OutageSerializer
     permission_classes = [IsAuthenticated]
@@ -44,12 +41,11 @@ class OutageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Eager load related data to improve performance
-        return Outage.objects.select_related('project', 'alert').prefetch_related(
+        return Outage.objects.select_related('project').prefetch_related('alert',
             'effected', 'effected__home', 'effected__home__active_subscriber'
         )
 
     def list(self, request, *args, **kwargs):
-        """Corresponds to the `index` method."""
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response({
@@ -57,7 +53,6 @@ class OutageViewSet(viewsets.ModelViewSet):
         })
 
     def create(self, request, *args, **kwargs):
-        """Corresponds to the `store` method."""
         user = request.user
         project_id = request.data.get('project_id')
         is_confirmed = request.data.get('confirmed', False)
@@ -93,7 +88,6 @@ class OutageViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='outage-checkbox-nodes')
     def outage_checkbox_nodes(self, request):
-        """Corresponds to `outage_checkbox_nodes`."""
         # This implementation closely mirrors the nested structure of the PHP version.
         checkbox_nodes = {}
         homes = Home.objects.select_related(

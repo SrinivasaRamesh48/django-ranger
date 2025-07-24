@@ -13,7 +13,7 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_serializer_class(self):
         return PaymentSerializer
-
+    
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset().select_related(
             'subscriber__service_plan',

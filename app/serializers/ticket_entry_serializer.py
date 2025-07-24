@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from app.models import TicketEntry
 from app.serializers.ticket_entry_action_serializer import TicketEntryActionSerializer
-from app.serializers.dispatch_appointment_serializer import DispatchAppointmentSerializer
+
 from app.models import DispatchAppointment
 
 class TicketEntrySerializer(serializers.ModelSerializer):
@@ -28,12 +28,14 @@ class TicketEntrySerializer(serializers.ModelSerializer):
         ]
 
     def get_dispatch_appointment(self, obj):
+        from app.serializers.dispatch_appointment_serializer import DispatchAppointmentSerializer
         appointment = getattr(obj, 'dispatch_appointment', None)
         if appointment:
             return DispatchAppointmentSerializer(appointment).data
         return None
 
     def get_latest_dispatch_appointment(self, obj):
+        from app.serializers.dispatch_appointment_serializer import DispatchAppointmentSerializer
         latest = DispatchAppointment.objects.filter(ticket_entry=obj).order_by('-date').first()
         if latest:
             return DispatchAppointmentSerializer(latest).data

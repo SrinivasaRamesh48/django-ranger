@@ -12,9 +12,6 @@ class ProjectAlertViewSet(viewsets.ModelViewSet):
     lookup_field = 'project_alert_id' 
 
     def perform_create(self, serializer):
-        """
-        Custom logic for creating a new alert. Replaces the `store` method.
-        """
         user = self.request.user
         is_active = serializer.validated_data.get('active', False)
         
@@ -25,9 +22,6 @@ class ProjectAlertViewSet(viewsets.ModelViewSet):
         )
 
     def perform_update(self, serializer):
-        """
-        Custom logic for updating an existing alert. Replaces the `update` method.
-        """
         user = self.request.user
         instance = serializer.instance
         is_active = serializer.validated_data.get('active', instance.active)

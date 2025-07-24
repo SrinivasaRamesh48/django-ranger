@@ -9,9 +9,6 @@ from app.serializers.node_serializer import NodeSerializer
 from app.serializers.upload_serializer import UploadSerializer
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    """
-    A unified ViewSet for managing Projects. Corresponds to ProjectController.
-    """
     queryset = Project.objects.all()
     permission_classes = [IsAuthenticated]
     lookup_field = 'project_id'
@@ -21,9 +18,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         
 
     def get_queryset(self):
-        """Eager load common relationships to improve performance."""
         return Project.objects.select_related(
-            'us_state', 'builder', 'subscription_type', 'network_type', 'circuit'
+            'state', 'builder', 'subscription_type', 'network_type', 'circuit'
         ).prefetch_related('homes', 'nodes')
 
     def list(self, request, *args, **kwargs):

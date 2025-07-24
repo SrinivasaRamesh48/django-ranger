@@ -4,6 +4,8 @@ from app.serializers.node_frame_serializer import NodeFrameSerializer
 from app.serializers.node_type_serializer import NodeTypeSerializer
 from app.serializers.node_class_serializer import NodeClassSerializer
 from app.serializers.project_serializer import ProjectSerializer
+from app.serializers.home_serializer import HomeSerializer
+
 
 class NodeSerializer(serializers.ModelSerializer):
     node_frame = NodeFrameSerializer(read_only=True)
@@ -22,7 +24,7 @@ class NodeSerializer(serializers.ModelSerializer):
     project_id = serializers.PrimaryKeyRelatedField(
         queryset=Node.objects.all(), source='project', write_only=True
     )
-    
+    home = HomeSerializer(many=True, read_only=True)
     class Meta:
         model = Node
         fields = [
@@ -42,5 +44,6 @@ class NodeSerializer(serializers.ModelSerializer):
             'node_class_id', 
             'project_id',
             'created_at', 
-            'updated_at'
+            'updated_at',
+            'home'
         ]

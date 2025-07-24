@@ -8,20 +8,11 @@ from app.serializers.node_class_serializer import NodeClassSerializer
 
 
 class NodeClassViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A read-only ViewSet for retrieving Node Classes.
-    This corresponds to `NodeClassesController@index`.
-    - GET /node_classes -> Triggers the `list` action.
-    """
     queryset = NodeClass.objects.all()
     serializer_class = NodeClassSerializer
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
-        """
-        Overrides the default list action to provide a custom response format
-        that matches the original Laravel API.
-        """
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         data = serializer.data

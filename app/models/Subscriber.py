@@ -25,54 +25,11 @@ class Subscriber(TimeStampedModelMixin, models.Model):
     autopay_merchant_id = models.CharField(max_length=100, null=True, blank=True)
     acp_application_id = models.CharField(max_length=100, null=True, blank=True)
     qbo_customer_id = models.CharField(max_length=100, null=True, blank=True)
-
     multi_home_subscriber = models.BooleanField(default=False)
     pause_billing = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'subscribers'
 
-    # --- Relationships ---
-
-    def get_tickets(self):
-        return self.tickets.all()
-
-    def open_tickets(self):
-        try:
-            return self.tickets.exclude(ticket_status_id=1)
-        except AttributeError:
-            # Handle case where tickets doesn't exist (e.g., in tests)
-            return []
-
-    def active_statement(self):
-        try:
-            return self.statements.filter(archived=False).first()
-        except AttributeError:
-            return None
-
-    def active_alerts(self):
-        try:
-            return self.alerts.filter(active=True).order_by('-alert_type_id')
-        except AttributeError:
-            return []
-
-    def get_uploads(self):
-        return self.uploads.all()
-
-    def statement(self):
-        return self.statements.filter(archived=False).first()
-
-    def get_statements(self):
-        return self.statements.all()
-
-    def get_payments(self):
-        return self.payment_set.all()
-
-    def get_payment_methods(self):
-        return self.payment_methods.all()
-
-    def multi_homes(self):
-        return self.multihomesubscriberhome_set.all()
-
-    def get_alerts(self):
-        return self.alerts.filter(active=True).order_by('-alert_type_id')
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.subscriber_id})"

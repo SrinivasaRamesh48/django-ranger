@@ -1,7 +1,6 @@
 from django.db import models
 
 class Project(models.Model):
-    """Django equivalent of the Laravel Project model."""
     project_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
@@ -22,6 +21,7 @@ class Project(models.Model):
     subscription_type = models.ForeignKey("SubscriptionType", on_delete=models.PROTECT, db_column='subscription_type_id')
     service_plan = models.ForeignKey("ServicePlan", on_delete=models.SET_NULL, null=True, blank=True, db_column='bulk_service_plan_id')
     circuit = models.ForeignKey("Circuit", on_delete=models.SET_NULL, null=True, blank=True, db_column='circuit_id')
+    network_type = models.ForeignKey("ProjectNetworkType", on_delete=models.SET_NULL, null=True, blank=True, db_column='network_type_id')
 
     class Meta:
         db_table = "projects"

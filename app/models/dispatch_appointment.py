@@ -5,7 +5,6 @@ from .ticket import Ticket
 from .user import User 
 
 class DispatchAppointment(models.Model):
-    """Django equivalent of the Laravel DispatchAppointment model."""
     dispatch_appointment_id = models.AutoField(primary_key=True)
     date = models.DateField()
     notes = models.TextField(blank=True, null=True)

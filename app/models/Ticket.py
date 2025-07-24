@@ -7,8 +7,6 @@ class Ticket(TimeStampedModelMixin, models.Model):
     opened_on = models.DateTimeField(auto_now_add=True)
     reopened_on = models.DateTimeField(null=True, blank=True)
     closed_on = models.DateTimeField(null=True, blank=True)
-
-    # Relationships
     subscriber = models.ForeignKey('Subscriber', on_delete=models.CASCADE, related_name='tickets', db_column='subscriber_id')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id')
     ticket_category = models.ForeignKey(TicketCategory, on_delete=models.PROTECT, db_column='ticket_category_id', default=2)

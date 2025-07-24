@@ -7,22 +7,13 @@ from app.models.circuit_alert import CircuitAlert
 from app.serializers.circuit_alert_serializer import CircuitAlertSerializer
 
 class CircuitAlertViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for creating and updating Circuit Alerts.
-    This replaces the `store` and `update` methods of the Laravel controller.
-    - POST /circuit-alerts/ -> create()
-    - PUT /circuit-alerts/{id}/ -> update()
-    - PATCH /circuit-alerts/{id}/ -> partial_update()
-    """
     queryset = CircuitAlert.objects.all()
     serializer_class = CircuitAlertSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'circuit_alert_id' # Use circuit_alert_id in the URL
+    lookup_field = 'circuit_alert_id' 
+    
 
     def perform_create(self, serializer):
-        """
-        Custom logic for creating a new alert. Replaces the `store` method.
-        """
         user = self.request.user
         is_active = serializer.validated_data.get('active', False)
         
@@ -33,9 +24,6 @@ class CircuitAlertViewSet(viewsets.ModelViewSet):
         )
 
     def perform_update(self, serializer):
-        """
-        Custom logic for updating an existing alert. Replaces the `update` method.
-        """
         user = self.request.user
         instance = serializer.instance
         is_active = serializer.validated_data.get('active', instance.active)

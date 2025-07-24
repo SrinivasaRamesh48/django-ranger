@@ -9,9 +9,6 @@ from . import services
 
 class MacAddressListView(APIView):
     def get(self, request):
-        """
-        Retrieves a list of all MAC addresses, ordered by the most recent.
-        """
         try:
 
             mac_addresses = MacAddress.objects.select_related("home", "home__node").order_by("-mac_address_id")
@@ -34,10 +31,6 @@ class MacAddressListView(APIView):
 
 class ToggleFirmwareUpdateView(APIView):
     def post(self, request):
-        """
-        Expects 'mac_address_id', 'firmware_update', and 'firmware_update_manual'
-        in the request data.
-        """
         mac_address_id = request.data.get('mac_address_id')
         firmware_update = request.data.get('firmware_update')
         firmware_update_manual = request.data.get('firmware_update_manual')
@@ -50,8 +43,6 @@ class ToggleFirmwareUpdateView(APIView):
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Find the object and update it. The .update() method returns the
-            # number of rows affected.
             rows_updated = MacAddress.objects.filter(mac_address_id=mac_address_id).update(
                 firmware_update=firmware_update,
                 firmware_update_manual=firmware_update_manual
@@ -64,7 +55,6 @@ class ToggleFirmwareUpdateView(APIView):
                 }
                 return Response(response, status=status.HTTP_200_OK)
             else:
-                # This case handles when the mac_address_id does not exist
                 response = {
                     'success': False,
                     'message': 'Failed to Toggle Firmware Update. MAC Address not found.'
@@ -80,18 +70,9 @@ class ToggleFirmwareUpdateView(APIView):
 
 
 class DefaultCPESettingsView(APIView):
-    """
-    Retrieves the default SSID and passkey for a CPE.
-    Equivalent to the default_cpe_settings() method.
-    """
     def get(self, request, pk):
-        """
-        Takes the primary key (id) of the MAC address from the URL.
-        """
         try:
             cpe = MacAddress.objects.get(pk=pk)
-
-            # Check if the fields required for credentials exist
             if not cpe.default_ssid or not cpe.default_passkey:
                 response = {
                     'success': False,
@@ -100,8 +81,6 @@ class DefaultCPESettingsView(APIView):
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
 
-            # The logic for getting credentials should be on the model or in a service.
-            # Here, we assume a method on the model that uses a service for decryption.
             credentials = cpe.get_default_credentials()
 
             response = {

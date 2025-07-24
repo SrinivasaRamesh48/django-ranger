@@ -1,4 +1,6 @@
 from django.db import models
+
+from app.models.alert import Alert
 from .project import Project
 from .outage_homes_effected import OutageHomesEffected  
 
@@ -25,5 +27,3 @@ class Outage(models.Model):
 
     def __str__(self):
         return f"Outage {self.outage_id}"
-
-    

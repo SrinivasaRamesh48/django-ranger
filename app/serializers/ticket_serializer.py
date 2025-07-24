@@ -1,40 +1,29 @@
 from rest_framework import serializers
 from app.models import Ticket
-
+from app.serializers.ticket_category_serializer import TicketCategorySerializer
+from app.serializers.user_serializer import UserSerializer
+from app.serializers.ticket_status_serializer import TicketStatusSerializer
+from app.serializers.ticket_entry_serializer import TicketEntrySerializer
 
 class TicketSerializer(serializers.ModelSerializer):
-    entries = serializers.SerializerMethodField()
-    ticket_category = serializers.StringRelatedField()
-    ticket_status = serializers.StringRelatedField()
-    user = serializers.StringRelatedField()
-    subscriber = serializers.SerializerMethodField()
-
-    minimize = serializers.SerializerMethodField()
-    close_ticket = serializers.SerializerMethodField()
-
+    ticket_category = TicketCategorySerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    ticket_status = TicketStatusSerializer(read_only=True)
+    entries = TicketEntrySerializer(many=True, read_only=True)
     class Meta:
         model = Ticket
-        fields = '__all__'
-
-    def get_entries(self, obj):
-        from app.serializers.ticket_entry_serializer import TicketEntrySerializer
-        return TicketEntrySerializer(obj.entries.all(), many=True).data
-        
-    def get_subscriber(self, obj):
-        # Use a simple representation to avoid circular reference with SubscriberSerializer
-        if obj.subscriber:
-            return {
-                'subscriber_id': obj.subscriber.subscriber_id,
-                'first_name': obj.subscriber.first_name,
-                'last_name': obj.subscriber.last_name,
-                'primary_email': obj.subscriber.primary_email,
-                'primary_phone': obj.subscriber.primary_phone,
-                'username': obj.subscriber.username,
-            }
-        return None
-
-    def get_minimize(self, obj):
-        return False
-
-    def get_close_ticket(self, obj):
-        return False
+        fields = [
+            'ticket_id',
+            'opened_on',
+            'reopened_on',
+            'closed_on',
+            'created_at',
+            'updated_at',
+            'subscriber',
+            'user',
+            'ticket_category',
+            'ticket_status',
+            'entries',
+            'minimize',
+            'close_ticket'
+        ]

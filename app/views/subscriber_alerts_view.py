@@ -23,9 +23,6 @@ class SubscriberAlertViewSet(viewsets.ModelViewSet):
         )
 
     def perform_update(self, serializer):
-        """
-        Custom logic for updating an existing alert. Replaces the `update` method.
-        """
         user = self.request.user
         instance = serializer.instance
         is_active = serializer.validated_data.get('active', instance.active)

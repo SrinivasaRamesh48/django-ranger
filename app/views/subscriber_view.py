@@ -16,8 +16,6 @@ class SubscriberListView(APIView):
         ).prefetch_related(
             'home__mac_address'
         ).order_by('-subscriber_id')
-
-        # Add multi_homes attribute dynamically
         subscriber_list = []
         for subscriber in subscribers:
             if subscriber.multi_home_subscriber:

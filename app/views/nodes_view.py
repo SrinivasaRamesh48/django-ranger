@@ -6,9 +6,6 @@ from app.models.node import Node
 from app.serializers.node_serializer import NodeSerializer
 
 class NodeViewSet(viewsets.ModelViewSet):
-    """
-    A ViewSet for viewing and managing Nodes (Equipment).
-    """
     queryset = Node.objects.all()
     serializer_class = NodeSerializer
     permission_classes = [IsAuthenticated]
@@ -20,8 +17,6 @@ class NodeViewSet(viewsets.ModelViewSet):
         ).prefetch_related('homes', 'homes__subscribers')
 
     def list(self, request, *args, **kwargs):
-        """Corresponds to the `index` method."""
-        # Filter for active nodes and apply default ordering by hostname.
         queryset = self.get_queryset().filter(active=True)
         serializer = self.get_serializer(queryset, many=True)
         return Response({
@@ -41,7 +36,6 @@ class NodeViewSet(viewsets.ModelViewSet):
         })
 
     def create(self, request, *args, **kwargs):
-        """Corresponds to the `store` method."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -52,13 +46,12 @@ class NodeViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
-        """Corresponds to the `update` method."""
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response({
             'success': True,
-            'data': True, # Matching Laravel's response
+            'data': True, 
             'message': 'Node Successfully Updated.'
         })

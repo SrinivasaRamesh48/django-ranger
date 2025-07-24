@@ -1,9 +1,14 @@
 from rest_framework import serializers
 from app.models import NodeFrame
-from app.serializers.project_serializer import ProjectSerializer
+
 
 class NodeFrameSerializer(serializers.ModelSerializer):
-    project = ProjectSerializer(read_only=True)
+    project = serializers.SerializerMethodField()
+    def get_project(self, obj):
+        if obj.project:
+            from app.serializers.project_serializer import ProjectSerializer
+            return ProjectSerializer(obj.project).data
+        return None
 
     class Meta:
         model = NodeFrame

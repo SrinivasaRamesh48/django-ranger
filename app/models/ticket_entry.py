@@ -14,13 +14,9 @@ class TicketEntry(TimeStampedModelMixin, models.Model):
     ticket = models.ForeignKey('Ticket', on_delete=models.CASCADE, related_name='entries', db_column='ticket_id')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='user_id')
     dispatch_appointment = models.OneToOneField('DispatchAppointment',on_delete=models.SET_NULL,null=True,blank=True,db_column='dispatch_appointment_id',related_name='ticket_entry',)
+    
+    
     class Meta:
         db_table = 'ticket_entry'
         ordering = ['-created_at']
 
-    @property
-    def service_change_schedule(self):
-        try:
-            return self.servicechangeschedule
-        except ServiceChangeSchedule.DoesNotExist:
-            return None
